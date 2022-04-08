@@ -1,0 +1,66 @@
+<h3>This is the page of About the Little Jamaica</h3>
+<button class="btn-primary" (click)="onShowAbout()">Show</button>
+<&nbsp;>
+<button class="btn-outline-warning" [disabled]="!allowUpdate" (click)="onUpdateAbout()">Update</button>
+<hr>
+<table *ngIf="listOfAbout && listOfAbout.length > 0">
+  <thead>
+  <tr>
+    <th style="border: 1px solid #000000;">number</th>
+    <th style="border: 1px solid #000000;">First Title</th>
+    <th style="border: 1px solid #000000;">First Content</th>
+    <th style="border: 1px solid #000000;">Second Title</th>
+    <th style="border: 1px solid #000000;">Second Content</th>
+    <th style="border: 1px solid #000000;">Facebook</th>
+    <th style="border: 1px solid #000000;">Twitter</th>
+    <th style="border: 1px solid #000000;">Instagram</th>
+    <th style="border: 1px solid #000000;">Phone</th>
+    <th style="border: 1px solid #000000;">Email</th>
+    <th style="border: 1px solid #000000;">Share Link</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let weat of listOfAbout; let i = index">
+    <td style="border: 1px solid #000000;">{{i+1}}</td>
+    <td style="border: 1px solid #000000;">{{weat.title1}}</td>
+    <td style="border: 1px solid #000000;">{{weat.content1}}</td>
+    <td style="border: 1px solid #000000;">{{weat.title2}}</td>
+    <td style="border: 1px solid #000000;">{{weat.content2}}</td>
+    <td style="border: 1px solid #000000;">{{weat.facebook}}</td>
+    <td style="border: 1px solid #000000;">{{weat.twitter}}</td>
+    <td style="border: 1px solid #000000;">{{weat.instagram}}</td>
+    <td style="border: 1px solid #000000;">{{weat.telephon}}</td>
+    <td style="border: 1px solid #000000;">{{weat.email}}</td>
+    <td style="border: 1px solid #000000;">{{weat.shareLink}}</td>
+    <!--td style="border: 1px solid #000000;"><button class="btn-outline-warning">Update</button></td-->
+  </tr>
+  </tbody>
+</table>
+
+<div *ngIf="updateAboutWanted">
+  <h3>All fields are mandatory, unless otherwise stated!</h3>
+  <hr>
+  <label>First Title</label>
+  <input type="text" class="form-control" [(ngModel)]="aboutTitle1">
+  <label>First Content</label>
+  <input type="text" class="form-control" [(ngModel)]="aboutContent1">
+  <label>Second Title</label>
+  <input type="text" class="form-control" [(ngModel)]="aboutTitle2">
+  <label>Second Content</label>
+  <input type="text" class="form-control" [(ngModel)]="aboutContent2">
+  <label>Facebook</label>
+  <input type="text" class="form-control" [(ngModel)]="aboutFacebook">
+  <label>Twitter</label>
+  <input type="text" class="form-control" [(ngModel)]="aboutTwitter">
+  <label>Instagram</label>
+  <input type="text" class="form-control" [(ngModel)]="aboutInstagram">
+  <label>Phone</label>
+  <input type="text" class="form-control" [(ngModel)]="aboutTelephone">
+  <label>Email</label>
+  <input type="text" class="form-control" [(ngModel)]="aboutEmail">
+  <label>Share Link</label>
+  <input type="text" class="form-control" [(ngModel)]="aboutShareLink">
+  <hr>
+  <!--p *ngIf="eventName.length>0 && eventNote.length>0">{{allowNewEvent}}=true</p-->
+  <button class="btn btn-primary" (click)="onSubmitUpdateAbout()">Submit</button>
+</div>

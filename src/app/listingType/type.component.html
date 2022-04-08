@@ -1,0 +1,43 @@
+<h3>This is the page of Business Types</h3>
+<button class="btn-primary" (click)="onShowAllTypes()">Show All Types</button>
+<&nbsp;>
+<button class="btn-outline-success" (click)="onAddNewType()">Add New Type</button>
+<&nbsp;>
+<button class="btn-outline-warning" [disabled]="listOfType.length==0" (click)="onUpdateType()">Update</button>
+<hr>
+<div *ngIf="updateWanted">
+  <label>Enter the Id for update</label>
+  <input type="text" class="form-control" [(ngModel)]="typeId">
+  <button class="btn btn-primary" (click)="onSubmitUpdateType()">Submit</button>
+</div>
+<table *ngIf="listOfType && listOfType.length > 0">
+  <thead>
+  <tr>
+    <th style="border: 1px solid #000000;">number</th>
+    <th style="border: 1px solid #000000;">Business Type</th>
+    <th style="border: 1px solid #000000;">Description</th>
+    <th style="border: 1px solid #000000;">Id</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let weat of listOfType; let i = index">
+    <td style="border: 1px solid #000000;">{{i+1}}</td>
+    <td style="border: 1px solid #000000;">{{weat.name}}</td>
+    <td style="border: 1px solid #000000;">{{weat.description}}</td>
+    <td style="border: 1px solid #000000;">{{weat.id}}</td>
+    <!--td style="border: 1px solid #000000;"><button class="btn-outline-warning">Update</button></td-->
+  </tr>
+  </tbody>
+</table>
+
+<div *ngIf="newTypeWanted">
+  <h3>All fields are mandatory, unless otherwise stated!</h3>
+  <hr>
+  <label>Business Type</label>
+  <input type="text" class="form-control" [(ngModel)]="typeName">
+  <label>Description</label>
+  <input type="text" class="form-control" [(ngModel)]="typeDescription">
+  <hr>
+  <!--p *ngIf="eventName.length>0 && eventNote.length>0">{{allowNewEvent}}=true</p-->
+  <button class="btn btn-primary" (click)="onSubmitNewType()">Submit</button>
+</div>

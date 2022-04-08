@@ -1,0 +1,118 @@
+<h3>This is the page of Businesses</h3>
+<button class="btn-primary" (click)="onShowAllDetail()">Show All Businesses</button>
+<&nbsp;>
+<button class="btn-outline-success" (click)="onAddNewDetail()">Add New Business</button>
+<&nbsp;>
+<td style="border: 1px solid #000000;"><button class="btn-outline-warning" [disabled]="listOfDetails.length==0" (click)="onUpdateDetail()">Update</button></td>
+<&nbsp;>
+<td style="border: 1px solid #000000;"><button class="btn-danger" [disabled]="listOfDetails.length==0" (click)="onDeleteDetail()">Delete</button></td>
+<hr>
+<div *ngIf="updateDetailWanted">
+  <label>Enter the Id for update</label>
+  <input type="text" class="form-control" [(ngModel)]="detailIdToDeleteOrUpdate">
+  <button class="btn btn-primary" (click)="onSubmitUpdateDetail()">Submit</button>
+</div>
+<div *ngIf="deleteDetailWanted">
+  <label>Enter the Id for delete</label>
+  <input type="text" class="form-control" [(ngModel)]="detailIdToDeleteOrUpdate">
+  <button class="btn btn-primary" (click)="onSubmitDeleteDetail()">Submit</button>
+</div>
+<table *ngIf="listOfDetails && listOfDetails.length > 0">
+  <thead>
+  <tr>
+    <th style="border: 1px solid #000000;">number</th>
+    <th style="border: 1px solid #000000;">Id</th>
+    <th style="border: 1px solid #000000;">Name</th>
+    <th style="border: 1px solid #000000;">Note</th>
+    <th style="border: 1px solid #000000;">Address</th>
+    <th style="border: 1px solid #000000;">Address(cont.)</th>
+    <th style="border: 1px solid #000000;">Description</th>
+    <th style="border: 1px solid #000000;">Facebook</th>
+    <th style="border: 1px solid #000000;">Instagram</th>
+    <th style="border: 1px solid #000000;">Youtube</th>
+    <th style="border: 1px solid #000000;">Hot Business</th>
+    <th style="border: 1px solid #000000;">Rate</th>
+    <th style="border: 1px solid #000000;">Listing Type Id</th>
+    <th style="border: 1px solid #000000;">Listing Type Name</th>
+    <th style="border: 1px solid #000000;">Website</th>
+    <th style="border: 1px solid #000000;">Location</th>
+    <th style="border: 1px solid #000000;">Phone</th>
+    <th style="border: 1px solid #000000;">Email</th>
+    <th style="border: 1px solid #000000;">Share Link</th>
+    <th style="border: 1px solid #000000;">Order Link</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let weat of listOfDetails; let i = index">
+    <td style="border: 1px solid #000000;">{{i+1}}</td>
+    <td style="border: 1px solid #000000;">{{weat.id}}</td>
+    <td style="border: 1px solid #000000;">{{weat.name}}</td>
+    <td style="border: 1px solid #000000;">{{weat.note}}</td>
+    <td style="border: 1px solid #000000;">{{weat.address}}</td>
+    <td style="border: 1px solid #000000;">{{weat.address2}}</td>
+    <td style="border: 1px solid #000000;">{{weat.description}}</td>
+    <td style="border: 1px solid #000000;">{{weat.facebook}}</td>
+    <td style="border: 1px solid #000000;">{{weat.instagram}}</td>
+    <td style="border: 1px solid #000000;">{{weat.youtube}}</td>
+    <td style="border: 1px solid #000000;">{{weat.isHotBussiness}}</td>
+    <td style="border: 1px solid #000000;">{{weat.rate}}</td>
+    <td style="border: 1px solid #000000;">{{weat.listingTypeId}}</td>
+    <td style="border: 1px solid #000000;">{{weat.listingTypeName}}</td>
+    <td style="border: 1px solid #000000;">{{weat.website}}</td>
+    <td style="border: 1px solid #000000;">{{weat.location}}</td>
+    <td style="border: 1px solid #000000;">{{weat.phone}}</td>
+    <td style="border: 1px solid #000000;">{{weat.email}}</td>
+    <td style="border: 1px solid #000000;">{{weat.shareLink}}</td>
+    <td style="border: 1px solid #000000;">{{weat.orderLink}}</td>
+    <!--td style="border: 1px solid #000000;"><button class="btn-outline-warning">Update</button></td>
+    <td><&nbsp;></td>
+    <td style="border: 1px solid #000000;"><button class="btn-danger">Delete</button></td-->
+  </tr>
+  </tbody>
+</table>
+
+<div *ngIf="updateDataDetail">
+  <h3>All fields are mandatory, unless otherwise stated!</h3>
+  <hr>
+  <label>Id</label>
+  <input type="text" class="form-control" [disabled]="true" [(ngModel)]="detailId">
+  <label>Name</label>
+  <input type="text" class="form-control" [(ngModel)]="detailName">
+  <label>Note</label>
+  <input type="text" class="form-control" [(ngModel)]="detailNote">
+  <label>Street Number and Name</label>
+  <input type="text" class="form-control" [(ngModel)]="detailAddress">
+  <label>Province and Postal Code</label>
+  <input type="text" class="form-control" [(ngModel)]="detailAddress2">
+  <label>Description</label>
+  <input type="text" class="form-control" [(ngModel)]="detailDescription">
+  <label>Facebook</label>
+  <input type="text" class="form-control" [(ngModel)]="detailFacebook">
+  <label>Instagram</label>
+  <input type="text" class="form-control" [(ngModel)]="detailInstagram">
+  <label>YouTube</label>
+  <input type="text" class="form-control" [(ngModel)]="detailYoutube">
+  <label>Hot Business</label>
+  <input type="text" class="form-control" [(ngModel)]="detailIsHotBussiness">
+  <label>Rate</label>
+  <input type="text" class="form-control" [(ngModel)]="detailRate">
+  <label>Listing Type Id</label>
+  <input type="text" class="form-control" [(ngModel)]="detailListingTypeId">
+  <label>Listing Type Name</label>
+  <input type="text" class="form-control" [(ngModel)]="detailListingTypeName">
+  <label>Website</label>
+  <input type="text" class="form-control" [(ngModel)]="detailWebsite">
+  <label>Location</label>
+  <input type="text" class="form-control" [(ngModel)]="detailLocation">
+  <label>Phone</label>
+  <input type="text" class="form-control" [(ngModel)]="detailPhone">
+  <label>Email</label>
+  <input type="text" class="form-control" [(ngModel)]="detailEmail">
+  <label>Share Link</label>
+  <input type="text" class="form-control" [(ngModel)]="detailShareLink">
+  <label>Order Link</label>
+  <input type="text" class="form-control" [(ngModel)]="detailOrderLink">
+  <hr>
+  <!--p *ngIf="eventName.length>0 && eventNote.length>0">{{allowNewEvent}}=true</p-->
+  <button class="btn btn-primary" (click)="onSubmitDataToUpdateDetail()">Submit</button>
+</div>

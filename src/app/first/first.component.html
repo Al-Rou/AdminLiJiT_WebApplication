@@ -1,0 +1,20 @@
+<div *ngIf="!adminAuthorized">
+  <button class="btn-primary" (click)="onShowLoginPage()">Login</button>
+</div>
+<div *ngIf="adminAuthorized">
+  <button class="btn-primary" (click)="onShowEventsPage()">Events</button>
+  <&nbsp;>
+  <button class="btn-primary" (click)="onShowAboutPage()">About</button>
+  <&nbsp;>
+  <button class="btn-primary" (click)="onShowTypePage()">Business Types</button>
+  <&nbsp;>
+  <button class="btn-primary" (click)="onShowDetailPage()">Business Details</button>
+  <&nbsp;>
+  <button class="btn-outline-danger" (click)="onSignOutPage()">Sign out</button>
+  <hr>
+</div>
+<login-page *ngIf="loginPageClicked"></login-page>
+<events-page *ngIf="eventsPageClicked"></events-page>
+<about-page *ngIf="aboutPageClicked"></about-page>
+<type-page *ngIf="typePageClicked"></type-page>
+<detail-page *ngIf="detailPageClicked"></detail-page>
