@@ -284,9 +284,9 @@ export class EventsComponent{
     this.listOfEvents = [];
   }
   onSubmitDataForUpdateEvent(){
-    if(this.eventName!=='' && this.eventNote!=='' && this.eventEmail!=='' && this.eventPhone!=='' && this.eventAddress1!=='' &&
-      this.eventDescription!=='' && this.eventOrganizer!=='' && this.eventEndDate2!==undefined && this.eventStartDate2!==undefined && this.eventShareLink!=='' &&
-      this.eventLocation!==''){
+    if(this.eventName2!=='' && this.eventNote2!=='' && this.eventEmail2!=='' && this.eventPhone2!=='' && this.eventAddress12!=='' &&
+      this.eventDescription2!=='' && this.eventOrganizer2!=='' && this.eventEndDate2!==undefined && this.eventStartDate2!==undefined && this.eventShareLink2!=='' &&
+      this.eventLocation2!==''){
       this.firstEntryUpcomingEvents = {
         id: 0,
         name: this.eventName2,
@@ -303,7 +303,7 @@ export class EventsComponent{
         shareLink: this.eventShareLink2,
         organizer: this.eventOrganizer2
       }
-      this.putUpdateEvent(this.firstEntryUpcomingEvents, this.eventId);
+      this.putUpdateEvent(this.firstEntryUpcomingEvents, this.eventIdToDeleteOrUpdate);
       this.updateFormWanted = false;
     }else {
       alert("All mandatory fields are not filled yet!");
