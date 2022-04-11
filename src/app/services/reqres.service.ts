@@ -23,7 +23,9 @@ export class ReqresService{
   private urlUpdateAbout = 'https://adminlijit.azurewebsites.net/AboutContent/Update?id=';
   private urlGetAllTypes = 'https://adminlijit.azurewebsites.net/ListingType/Category';
   private urlGetAllBusinesses = 'https://adminlijit.azurewebsites.net/ListingDetail/Stores';
-  private urlToCreateNewEvent = 'https:';
+  private urlToCreateNewEvent = 'https://adminlijit.azurewebsites.net/Events/Create';
+  private urlToUpdateEvent = 'https://adminlijit.azurewebsites.net/Events/Update?id=';
+  private urlToDeleteEvent = 'https://adminlijit.azurewebsites.net/Events/Delete?id=';
   //The token is
   // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6IkxpSmlUIiwibmJmIjoxNjQ5MzkwMzY3LCJleHAiOjE2NDk0MDgzNjcsImlhdCI6MTY0OTM5MDM2N30.Q5HxG_4b-lLM-_v3KS7PDG-mNb0lJTJF6q_0g6FKd2o
   tokenValue = '';
@@ -75,6 +77,7 @@ export class ReqresService{
     const requestOptions = {
       headers: new HttpHeaders(headerDict)
     };
+    alert('ReqresService is called');
     return this.http.get<UpComingEvent[]>(this.urlUpcomingEvents, requestOptions);
   }
   async getTypes(): Promise<Observable<Type[]>> {
@@ -137,7 +140,94 @@ export class ReqresService{
     }
     alert("this is post in ReqresService!");
     this.http.post<UpComingEvent>(this.urlToCreateNewEvent, requestBody, requestOptions).subscribe(res =>{
-      alert('The event is successfully stored!');
+      alert('The event was successfully stored!');
+    });
+  }
+  async putUpdateEvent(updatedEve: UpComingEvent, idForUpdate: string){
+    const headerDict = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+ this.tokenValue,
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headerDict)
+    };
+    const requestBody = {
+      name: updatedEve.name,
+      note: updatedEve.note,
+      address: updatedEve.address,
+      address2: updatedEve.address2,
+      description: updatedEve.description,
+      startDate: updatedEve.startDate,
+      endDate: updatedEve.endDate,
+      imageEvent: updatedEve.imageEvent,
+      location: updatedEve.location,
+      phone: updatedEve.phone,
+      email: updatedEve.email,
+      shareLink: updatedEve.shareLink,
+      organizer: updatedEve.organizer
+    }
+    alert("this is post in ReqresService!");
+    this.http.put<UpComingEvent>(this.urlToUpdateEvent+idForUpdate, requestBody, requestOptions).subscribe(res =>{
+      alert('The event was successfully updated!');
+    });
+  }
+  async removeEvent(idToRemove: string){
+    const headerDict = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+ this.tokenValue,
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headerDict)
+    };
+    // const requestBody = {
+    //   id: 0,
+    //   name: newEvent.name,
+    //   note: newEvent.note,
+    //   address: newEvent.address,
+    //   address2: newEvent.address2,
+    //   description: newEvent.description,
+    //   startDate: newEvent.startDate,
+    //   endDate: newEvent.endDate,
+    //   imageEvent: newEvent.imageEvent,
+    //   location: newEvent.location,
+    //   phone: newEvent.phone,
+    //   email: newEvent.email,
+    //   shareLink: newEvent.shareLink,
+    //   organizer: newEvent.organizer
+    // }
+    alert("this is delete in ReqresService!");
+    this.http.delete<UpComingEvent>(this.urlToDeleteEvent+idToRemove, requestOptions).subscribe(res =>{
+      alert('The event was successfully deleted!');
+    });
+  }
+  async uploadPhotoForAbout(newAbout: About){
+    const headerDict = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+ this.tokenValue,
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headerDict)
+    };
+    const requestBody = {
+      title1: newAbout.title1,
+      title2: newAbout.title2,
+      content1: newAbout.content1,
+      content2: newAbout.content2,
+      imageAbout: newAbout.imageAbout,
+      facebook: newAbout.facebook,
+      twitter: newAbout.twitter,
+      instagram: newAbout.instagram,
+      telephon: newAbout.telephon,
+      email: newAbout.email,
+      shareLink: newAbout.shareLink
+    }
+    if(newAbout.imageAbout !== ''){
+      alert('Photo not empty');
+    }else {
+      alert('Receive by reqres' + newAbout.id);
+    }
+    this.http.put<About>(this.urlUpdateAbout+newAbout.id, requestBody, requestOptions).subscribe(res =>{
+      alert('Changes on About are successfully stored!');
     });
   }
 

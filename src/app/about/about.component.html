@@ -2,7 +2,19 @@
 <button class="btn-primary" (click)="onShowAbout()">Show</button>
 <&nbsp;>
 <button class="btn-outline-warning" [disabled]="!allowUpdate" (click)="onUpdateAbout()">Update</button>
+<&nbsp;>
+<button class="btn-outline-warning" [disabled]="!allowUpdate" (click)="onChangePhotoAbout()">Change Photo</button>
 <hr>
+<div style="text-align:center" *ngIf="changePhotoFormWanted">
+  <div [innerHtml]='msg' style="color: red;"></div>
+  <div><img [src]="url" *ngIf="url"></div>
+  <p>
+    <input type="file" (change)="selectFile($event)">
+  </p>
+  <button class="btn-primary" (click)="onConfirmPhotoAbout()">Confirm</button>
+  <&nbsp;>
+  <button class="btn-primary" [disabled]="!photoConfirmed" (click)="onUploadPhotoAbout()">Upload</button>
+</div>
 <table *ngIf="listOfAbout && listOfAbout.length > 0">
   <thead>
   <tr>
@@ -17,6 +29,7 @@
     <th style="border: 1px solid #000000;">Phone</th>
     <th style="border: 1px solid #000000;">Email</th>
     <th style="border: 1px solid #000000;">Share Link</th>
+    <th style="border: 1px solid #000000;">Photo</th>
   </tr>
   </thead>
   <tbody>
@@ -32,6 +45,7 @@
     <td style="border: 1px solid #000000;">{{weat.telephon}}</td>
     <td style="border: 1px solid #000000;">{{weat.email}}</td>
     <td style="border: 1px solid #000000;">{{weat.shareLink}}</td>
+    <td style="border: 1px solid #000000;"><img class="aboutImage" src="{{weat.imageAbout}}" /></td>
     <!--td style="border: 1px solid #000000;"><button class="btn-outline-warning">Update</button></td-->
   </tr>
   </tbody>

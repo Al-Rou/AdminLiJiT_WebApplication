@@ -11,8 +11,14 @@ export class AboutComponent{
   listOfAbout: About[] = [];
   firstEntryAbout: About | undefined;
   updateAboutWanted = false;
+  changePhotoFormWanted = false;
   allowUpdate = false;
   objectToUpdateAbout: About | undefined;
+  url: any;
+  msg = '';
+  selectedFile: File | undefined;
+  base64textString = '';
+  photoConfirmed = false;
 
   aboutId = 0;
   aboutTitle1 = '';
@@ -31,6 +37,85 @@ export class AboutComponent{
 
   }
 
+  selectFile(event: any) {
+    if(!event.target.files[0] || event.target.files[0].length == 0) {
+      this.msg = 'You must select an image';
+      return;
+    }
+    this.selectedFile = <File> event.target.files[0];
+    var mimeType = event.target.files[0].type;
+
+    if (mimeType.match(/image\/*/) == null) {
+      this.msg = "Only images are supported";
+      return;
+    }
+
+    var reader = new FileReader();
+    reader.readAsDataURL(event.target.files[0]);
+
+    reader.onload = (_event) => {
+      this.msg = "";
+      this.url = reader.result;
+    }
+
+    // reader.onload =this._handleReaderLoaded.bind(this);
+    // reader.readAsBinaryString(this.selectedFile);
+
+  }
+  /*handleFileSelect(evt){
+    var files = evt.target.files;
+    var file = files[0];
+
+    if (files && file) {
+      var reader = new FileReader();
+
+      reader.onload =this._handleReaderLoaded.bind(this);
+
+      reader.readAsBinaryString(file);
+    }
+  }*/
+  _handleReaderLoaded(readerEvt: any) {
+    var binaryString = readerEvt.target.result;
+    this.base64textString= btoa(binaryString);
+    //console.log(btoa(binaryString));
+    console.log(this.base64textString);
+  }
+  onConfirmPhotoAbout() {
+    if (this.selectedFile !== undefined) {
+      var reader = new FileReader();
+      reader.onload = this._handleReaderLoaded.bind(this);
+      reader.readAsBinaryString(this.selectedFile);
+      this.photoConfirmed = true;
+    } else {
+      alert('No photo is chosen!');
+      return;
+    }
+  }
+  onUploadPhotoAbout(){
+    this.objectToUpdateAbout = {
+      id: this.aboutId,
+      title1: this.aboutTitle1,
+      title2: this.aboutTitle2,
+      content1: this.aboutContent1,
+      content2: this.aboutContent2,
+      imageAbout: this.base64textString,
+      facebook: this.aboutFacebook,
+      twitter: this.aboutTwitter,
+      instagram: this.aboutInstagram,
+      telephon: this.aboutTelephone,
+      email: this.aboutEmail,
+      shareLink: this.aboutShareLink
+    }
+    if(this.objectToUpdateAbout.imageAbout !== '') {
+      alert('image is full');
+      //console.log(this.base64textString);
+    }
+    this.goForUploadPhoto(this.objectToUpdateAbout);
+    this.changePhotoFormWanted = false;
+  }
+  async goForUploadPhoto(dtoAbout: About){
+    (await this.reqresService.uploadPhotoForAbout(dtoAbout));
+  }
 
   async getAboutContent(){
     (await this.reqresService.getAbout()).subscribe((res) => {
@@ -70,11 +155,18 @@ export class AboutComponent{
   }
 
   onShowAbout(){
+    this.changePhotoFormWanted = false;
     this.updateAboutWanted = false;
     this.getAboutContent();
   }
   onUpdateAbout(){
+    this.changePhotoFormWanted = false;
     this.updateAboutWanted = true;
+    this.listOfAbout = [];
+  }
+  onChangePhotoAbout(){
+    this.changePhotoFormWanted = true;
+    this.updateAboutWanted = false;
     this.listOfAbout = [];
   }
   onSubmitUpdateAbout(){
@@ -94,11 +186,10 @@ export class AboutComponent{
     }
     alert('Send to dto'+this.aboutEmail);
     this.setUpdateAbout(this.objectToUpdateAbout);
+    this.updateAboutWanted = false;
   }
   async setUpdateAbout(updatedDto: About){
-    alert('Send to reqres');
     (await this.reqresService.setUpdateAboutContent(updatedDto));
-    alert('The last message');
   }
 }
 export interface About{

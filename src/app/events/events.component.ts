@@ -11,14 +11,15 @@ import {Observable} from "rxjs";
 export class EventsComponent{
   listOfEvents: UpComingEvent[] = [];
   url = 'https://lijitapi.azurewebsites.net/weatherforecast';
-  WeatherEntries1: UpComingEvent[] = [];
-  WeatherEntries2: Weather[] = [];
+  //WeatherEntries1: UpComingEvent[] = [];
+  //WeatherEntries2: Weather[] = [];
   firstEntry: Weather | undefined;
   firstEntryUpcomingEvents: UpComingEvent | undefined;
   firstEntryAllEvents: UpComingEvent | undefined;
   allowNewEvent = false;
   newEventWanted = false;
   updateWanted = false;
+  updateFormWanted = false;
   deleteWanted = false;
   eventName = '';
   eventNote = '';
@@ -33,6 +34,23 @@ export class EventsComponent{
   eventShareLink = '';
   eventOrganizer = '';
   eventIdToDeleteOrUpdate = '';
+  eventImage = '';
+  eventId = '';
+
+  eventName2 = '';
+  eventNote2 = '';
+  eventAddress12 = '';
+  eventAddress22 = '';
+  eventDescription2 = '';
+  eventStartDate2: Date | undefined;
+  eventEndDate2: Date | undefined;
+  eventLocation2 = '';
+  eventPhone2 = '';
+  eventEmail2 = '';
+  eventShareLink2 = '';
+  eventOrganizer2 = '';
+  eventImage2 = '';
+  eventId2 = '';
 
   //private http: HttpClient;
   //constructor(http: HttpClient, @Inject('https://lijitapi.azurewebsites.net/weatherforecast') baseUrl: string) {
@@ -41,7 +59,9 @@ export class EventsComponent{
   }
   async getAllEvents(){
       (await this.reqresService.getAllEvents()).subscribe((res) => {
-        alert('Results are here');
+        if(res.length === 0){
+          alert('There is nothing to show!');
+        }
         for(let j = 0; j < res.length; j++) {
           this.firstEntryAllEvents = {
             // date: (res[j] as any).date,
@@ -62,7 +82,7 @@ export class EventsComponent{
             shareLink: (res[j] as any).shareLink,
             organizer: (res[j] as any).organizer
           }
-          this.WeatherEntries1.push(this.firstEntryAllEvents);
+          this.listOfEvents.push(this.firstEntryAllEvents);
         }
     });
   }
@@ -93,7 +113,14 @@ export class EventsComponent{
   async setUpcomingEvent(newEvent: UpComingEvent){
     (await this.reqresService.setUpcomingEvent(newEvent));
   }
+  async putUpdateEvent(updatedEve: UpComingEvent, idForUpdate: string){
+    (await this.reqresService.putUpdateEvent(updatedEve, idForUpdate));
+  }
+  async deleteEventNow(idForUpdate: string){
+    (await this.reqresService)
+  }
   onShowAllEvents(){
+    this.updateFormWanted = false;
     this.updateWanted = false;
     this.deleteWanted = false;
     this.newEventWanted = false;
@@ -102,35 +129,87 @@ export class EventsComponent{
     this.getAllEvents();
   }
   onShowUpcomingEvents(){
+    this.updateFormWanted = false;
     this.updateWanted = false;
     this.deleteWanted = false;
     this.newEventWanted = false;
-    this.WeatherEntries1 = [];
+    this.listOfEvents = [];
     this.getUpcomingEvents();
   }
   onUpdateEvent(){
+    this.updateFormWanted = false;
     this.updateWanted = true;
     this.deleteWanted = false;
     this.newEventWanted = false;
     this.eventIdToDeleteOrUpdate = '';
   }
   onDeleteEvent(){
+    this.updateFormWanted = false;
     this.updateWanted = false;
     this.deleteWanted = true;
     this.newEventWanted = false;
     this.eventIdToDeleteOrUpdate = '';
   }
   onSubmitUpdateEvent(){
+    this.updateFormWanted = true;
+    this.updateWanted = false;
     alert('Id ' + this.eventIdToDeleteOrUpdate + ' will be updated');
+    for(let j = 0; j < this.listOfEvents.length; j++){
+      if(this.listOfEvents[j].id.toString() === this.eventIdToDeleteOrUpdate){
+        this.eventId2 = this.listOfEvents[j].id.toString();
+        this.eventName2 = this.listOfEvents[j].name;
+        this.eventNote2 = this.listOfEvents[j].note;
+        this.eventAddress12 = this.listOfEvents[j].address;
+        this.eventAddress22 = this.listOfEvents[j].address2;
+        this.eventDescription2 = this.listOfEvents[j].description;
+        this.eventStartDate2 = this.listOfEvents[j].startDate;
+        this.eventEndDate2 = this.listOfEvents[j].endDate;
+        this.eventImage2 = this.listOfEvents[j].imageEvent;
+        this.eventLocation2 = this.listOfEvents[j].location;
+        this.eventPhone2 = this.listOfEvents[j].phone;
+        this.eventEmail2 = this.listOfEvents[j].email;
+        this.eventShareLink2 = this.listOfEvents[j].shareLink;
+        this.eventOrganizer2 = this.listOfEvents[j].organizer;
+
+        break;
+      }
+    }
+    this.listOfEvents = [];
+  }
+  onSubmitDataForUpdateEvent(){
+    if(this.eventName!=='' && this.eventNote!=='' && this.eventEmail!=='' && this.eventPhone!=='' && this.eventAddress1!=='' &&
+      this.eventDescription!=='' && this.eventOrganizer!=='' && this.eventEndDate2!==undefined && this.eventStartDate2!==undefined && this.eventShareLink!=='' &&
+      this.eventLocation!==''){
+      this.firstEntryUpcomingEvents = {
+        id: 0,
+        name: this.eventName2,
+        note: this.eventNote2,
+        address: this.eventAddress12,
+        address2: this.eventAddress22,
+        description: this.eventDescription2,
+        startDate: this.eventStartDate2,
+        endDate: this.eventEndDate2,
+        imageEvent: this.eventImage2,
+        location: this.eventLocation2,
+        phone: this.eventPhone2,
+        email: this.eventEmail2,
+        shareLink: this.eventShareLink2,
+        organizer: this.eventOrganizer2
+      }
+      this.putUpdateEvent(this.firstEntryUpcomingEvents, this.eventId);
+      this.updateFormWanted = false;
+    }else {
+      alert("All mandatory fields are not filled yet!");
+    }
   }
   onSubmitDeleteEvent(){
-    alert('Id ' + this.eventIdToDeleteOrUpdate + ' will be deleted');
+    alert('Are you sure to delete event with Id ' + this.eventIdToDeleteOrUpdate + ' ?');
+    this.deleteEventNow(this.eventIdToDeleteOrUpdate);
   }
   onAddEvent(){
     this.updateWanted = false;
     this.deleteWanted = false;
     this.listOfEvents = [];
-    this.WeatherEntries1 = [];
     this.newEventWanted = true;
   }
   onSubmitNewEvent(){
@@ -154,6 +233,7 @@ export class EventsComponent{
         organizer: this.eventOrganizer
       }
       this.setUpcomingEvent(this.firstEntryUpcomingEvents);
+      this.newEventWanted = false;
     }else {
       alert("All mandatory fields are not filled yet!");
     }

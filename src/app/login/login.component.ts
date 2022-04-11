@@ -23,7 +23,7 @@ export class LoginComponent{
       this.waitingMessage = 'It takes some while. Please be patient...';
       //this.getTokenPlease();
       //this.checkToken();
-      this.reqresService.tokenValue = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6IkxpSmlUIiwibmJmIjoxNjQ5NDQ4MDc4LCJleHAiOjE2NDk0NjYwNzgsImlhdCI6MTY0OTQ0ODA3OH0.YZTPw81PYlAJcGHAWEL6sZ2_Kizqksu9gyNqQBlWvUY';
+      this.reqresService.tokenValue = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6IkxpSmlUIiwibmJmIjoxNjQ5NjQ5MTYzLCJleHAiOjE2NDk2NjcxNjMsImlhdCI6MTY0OTY0OTE2M30.c7mEwtWjapxoe6NpeX7yxDSTz2mYuHoMfgZFP2KCz20';
       this.firstComp.adminAuthorized = true;
       this.firstComp.loginPageClicked = false;
     }else{
