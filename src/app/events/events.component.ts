@@ -2,6 +2,7 @@ import {Component, Inject} from "@angular/core";
 import {ReqresService} from "../services/reqres.service";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {About} from "../about/about.component";
 
 @Component({
   selector: 'events-page',
@@ -10,17 +11,25 @@ import {Observable} from "rxjs";
 
 export class EventsComponent{
   listOfEvents: UpComingEvent[] = [];
-  url = 'https://lijitapi.azurewebsites.net/weatherforecast';
+  //url = 'https://lijitapi.azurewebsites.net/weatherforecast';
   //WeatherEntries1: UpComingEvent[] = [];
   //WeatherEntries2: Weather[] = [];
   firstEntry: Weather | undefined;
   firstEntryUpcomingEvents: UpComingEvent | undefined;
   firstEntryAllEvents: UpComingEvent | undefined;
+  objectToUpdateEvent: UpComingEvent | undefined;
   allowNewEvent = false;
   newEventWanted = false;
   updateWanted = false;
   updateFormWanted = false;
+  photoWanted = false;
   deleteWanted = false;
+  changePhotoWanted = false;
+  url: any;
+  msg = '';
+  selectedFile: File | undefined;
+  base64textString = '';
+  photoConfirmed = false;
   eventName = '';
   eventNote = '';
   eventAddress1 = '';
@@ -57,6 +66,79 @@ export class EventsComponent{
   constructor(private reqresService: ReqresService) {
 
   }
+
+  selectFile(event: any) {
+    if(!event.target.files[0] || event.target.files[0].length == 0) {
+      this.msg = 'You must select an image';
+      return;
+    }
+    this.selectedFile = <File> event.target.files[0];
+    var mimeType = event.target.files[0].type;
+    if (mimeType.match(/image\/*/) == null) {
+      this.msg = "Only images are supported";
+      return;
+    }
+    var reader = new FileReader();
+    reader.readAsDataURL(event.target.files[0]);
+    reader.onload = (_event) => {
+      this.msg = "";
+      this.url = reader.result;
+    }
+  }
+  _handleReaderLoaded(readerEvt: any) {
+    var binaryString = readerEvt.target.result;
+    this.base64textString= btoa(binaryString);
+    //console.log(btoa(binaryString));
+    //console.log(this.base64textString);
+  }
+  onConfirmPhotoEvent() {
+    if (this.selectedFile !== undefined) {
+      var reader = new FileReader();
+      reader.onload = this._handleReaderLoaded.bind(this);
+      reader.readAsBinaryString(this.selectedFile);
+      this.photoConfirmed = true;
+    } else {
+      alert('No photo is chosen!');
+      return;
+    }
+  }
+  onUploadPhotoEvent(){
+    for(let j = 0; j < this.listOfEvents.length; j++) {
+      this.objectToUpdateEvent = {
+        id: 0,
+        name: this.listOfEvents[j].name,
+        note: this.listOfEvents[j].note,
+        address: this.listOfEvents[j].address,
+        address2: this.listOfEvents[j].address2,
+        description: this.listOfEvents[j].description,
+        startDate: this.listOfEvents[j].startDate,
+        endDate: this.listOfEvents[j].endDate,
+        imageEvent: this.base64textString,
+        location: this.listOfEvents[j].location,
+        phone: this.listOfEvents[j].phone,
+        email: this.listOfEvents[j].email,
+        shareLink: this.listOfEvents[j].shareLink,
+        organizer: this.listOfEvents[j].organizer
+      }
+      break;
+    }
+    if(this.objectToUpdateEvent !== undefined) {
+      if (this.objectToUpdateEvent.imageEvent !== '') {
+        alert('image is full');
+        console.log(this.objectToUpdateEvent.imageEvent);
+      }
+      alert(this.eventIdToDeleteOrUpdate);
+      this.goForUploadPhotoEvent(this.objectToUpdateEvent, this.eventIdToDeleteOrUpdate);
+      this.changePhotoWanted = false;
+    }else{
+      alert('Something went worng!');
+    }
+  }
+  async goForUploadPhotoEvent(dtoEvent: UpComingEvent, idToChange: string){
+    (await this.reqresService.uploadPhotoForEvent(dtoEvent, idToChange));
+    this.listOfEvents = [];
+  }
+
   async getAllEvents(){
       (await this.reqresService.getAllEvents()).subscribe((res) => {
         if(res.length === 0){
@@ -120,6 +202,8 @@ export class EventsComponent{
     (await this.reqresService)
   }
   onShowAllEvents(){
+    this.photoWanted = false;
+    this.changePhotoWanted = false;
     this.updateFormWanted = false;
     this.updateWanted = false;
     this.deleteWanted = false;
@@ -129,6 +213,8 @@ export class EventsComponent{
     this.getAllEvents();
   }
   onShowUpcomingEvents(){
+    this.photoWanted = false;
+    this.changePhotoWanted = false;
     this.updateFormWanted = false;
     this.updateWanted = false;
     this.deleteWanted = false;
@@ -137,13 +223,34 @@ export class EventsComponent{
     this.getUpcomingEvents();
   }
   onUpdateEvent(){
+    this.photoWanted = false;
+    this.changePhotoWanted = false;
     this.updateFormWanted = false;
     this.updateWanted = true;
     this.deleteWanted = false;
     this.newEventWanted = false;
     this.eventIdToDeleteOrUpdate = '';
   }
+  onChangePhotoEvent(){
+    this.photoWanted = true;
+    this.changePhotoWanted = false;
+    this.updateFormWanted = false;
+    this.updateWanted = false;
+    this.deleteWanted = false;
+    this.newEventWanted = false;
+    this.eventIdToDeleteOrUpdate = '';
+  }
+  onSubmitPhotoEventChange(){
+    this.photoWanted = false;
+    this.changePhotoWanted = true;
+    this.updateFormWanted = false;
+    this.updateWanted = false;
+    this.deleteWanted = false;
+    this.newEventWanted = false;
+  }
   onDeleteEvent(){
+    this.photoWanted = false;
+    this.changePhotoWanted = false;
     this.updateFormWanted = false;
     this.updateWanted = false;
     this.deleteWanted = true;

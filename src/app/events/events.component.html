@@ -7,9 +7,26 @@
 <&nbsp;>
 <td style="border: 1px solid #000000;"><button class="btn-outline-warning" [disabled]="listOfEvents.length==0" (click)="onUpdateEvent()">Update</button></td>
 <&nbsp;>
+<td style="border: 1px solid #000000;"><button class="btn-outline-warning" [disabled]="listOfEvents.length==0" (click)="onChangePhotoEvent()">Change Photo</button></td>
+<&nbsp;>
 <td style="border: 1px solid #000000;"><button class="btn-danger" [disabled]="listOfEvents.length==0" (click)="onDeleteEvent()">Delete</button></td>
 <!--p *ngFor="let ev of listOfEvents">{{ ev }}</p-->
 <hr>
+<div style="text-align:center" *ngIf="changePhotoWanted">
+  <div [innerHtml]='msg' style="color: red;"></div>
+  <div><img [src]="url" *ngIf="url"></div>
+  <p>
+    <input type="file" (change)="selectFile($event)">
+  </p>
+  <button class="btn-primary" (click)="onConfirmPhotoEvent()">Confirm</button>
+  <&nbsp;>
+  <button class="btn-primary" [disabled]="!photoConfirmed" (click)="onUploadPhotoEvent()">Upload</button>
+</div>
+<div *ngIf="photoWanted">
+  <label>Enter the Id for photo change</label>
+  <input type="text" class="form-control" [(ngModel)]="eventIdToDeleteOrUpdate">
+  <button class="btn btn-primary" (click)="onSubmitPhotoEventChange()">Submit</button>
+</div>
 <div *ngIf="updateWanted">
   <label>Enter the Id for update</label>
   <input type="text" class="form-control" [(ngModel)]="eventIdToDeleteOrUpdate">

@@ -230,6 +230,39 @@ export class ReqresService{
       alert('Changes on About are successfully stored!');
     });
   }
+  async uploadPhotoForEvent(updatedEve: UpComingEvent, idForUpdate: string){
+    const headerDict = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+ this.tokenValue,
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headerDict)
+    };
+    const requestBody = {
+      name: updatedEve.name,
+      note: updatedEve.note,
+      address: updatedEve.address,
+      address2: updatedEve.address2,
+      description: updatedEve.description,
+      startDate: updatedEve.startDate,
+      endDate: updatedEve.endDate,
+      imageEvent: updatedEve.imageEvent,
+      location: updatedEve.location,
+      phone: updatedEve.phone,
+      email: updatedEve.email,
+      shareLink: updatedEve.shareLink,
+      organizer: updatedEve.organizer
+    }
+    if(updatedEve.imageEvent !== ''){
+      alert('Photo not empty');
+    }else {
+      alert('Receive by reqres' + updatedEve.id);
+    }
+    alert("this is post in ReqresService!");
+    this.http.put<UpComingEvent>(this.urlToUpdateEvent+idForUpdate, requestBody, requestOptions).subscribe(res =>{
+      alert('The event was successfully updated!');
+    });
+  }
 
   async setUpdateAboutContent(newAbout: About){
     const headerDict = {
