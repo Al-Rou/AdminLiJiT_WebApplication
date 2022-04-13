@@ -184,7 +184,7 @@ export class AboutComponent{
       email: this.aboutEmail,
       shareLink: this.aboutShareLink
     }
-    alert('Send to dto'+this.aboutEmail);
+    alert('Send to dto'+this.objectToUpdateAbout.email);
     this.setUpdateAbout(this.objectToUpdateAbout);
     this.updateAboutWanted = false;
   }

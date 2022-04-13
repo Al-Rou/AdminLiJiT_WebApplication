@@ -13,9 +13,14 @@ export class LoginComponent{
   userName = '';
   passWord = '';
   waitingMessage = '';
+  hide = true;
 
 
   constructor(private reqresService: ReqresService, private firstComp: FirstComponent) {
+  }
+
+  onShowPassword(){
+    this.hide = !this.hide;
   }
 
   onGetToken(){
@@ -23,7 +28,7 @@ export class LoginComponent{
       this.waitingMessage = 'It takes some while. Please be patient...';
       //this.getTokenPlease();
       //this.checkToken();
-      this.reqresService.tokenValue = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6IkxpSmlUIiwibmJmIjoxNjQ5NjY3MjM0LCJleHAiOjE2NDk2ODUyMzQsImlhdCI6MTY0OTY2NzIzNH0.GKtE1pMx5m_Gr6LQY0jAVTHmhSjgc9kdcAM4b2zjhJg';
+      this.reqresService.tokenValue = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6IkxpSmlUIiwibmJmIjoxNjQ5ODI0NjYyLCJleHAiOjE2NDk4NDI2NjIsImlhdCI6MTY0OTgyNDY2Mn0.do3WGiCMEzrNQK93uKdQKh4IKc9deQVz_AhS7vz25BM';
       this.firstComp.adminAuthorized = true;
       this.firstComp.loginPageClicked = false;
     }else{

@@ -1,12 +1,29 @@
-<h3>This is the page of Businesses</h3>
+<h3>Businesses</h3>
 <button class="btn-primary" (click)="onShowAllDetail()">Show All Businesses</button>
 <&nbsp;>
 <button class="btn-outline-success" (click)="onAddNewDetail()">Add New Business</button>
 <&nbsp;>
 <td style="border: 1px solid #000000;"><button class="btn-outline-warning" [disabled]="listOfDetails.length==0" (click)="onUpdateDetail()">Update</button></td>
 <&nbsp;>
+<td style="border: 1px solid #000000;"><button class="btn-outline-warning" [disabled]="listOfDetails.length==0" (click)="onChangePhotoDetail()">Change Photo</button></td>
+<&nbsp;>
 <td style="border: 1px solid #000000;"><button class="btn-danger" [disabled]="listOfDetails.length==0" (click)="onDeleteDetail()">Delete</button></td>
 <hr>
+<div style="text-align:center" *ngIf="changePhotoFormWanted">
+  <div [innerHtml]='msg' style="color: red;"></div>
+  <div><img [src]="url" *ngIf="url"></div>
+  <p>
+    <input type="file" (change)="selectFile($event)">
+  </p>
+  <button class="btn-primary" (click)="onConfirmPhotoEvent()">Confirm</button>
+  <&nbsp;>
+  <button class="btn-primary" [disabled]="!photoConfirmed" (click)="onUploadPhotoDetail()">Upload</button>
+</div>
+<div *ngIf="changePhotoWanted">
+  <label>Enter the Id for photo change</label>
+  <input type="text" class="form-control" [(ngModel)]="detailIdToDeleteOrUpdate">
+  <button class="btn btn-primary" (click)="onSubmitChangePhotoDetail()">Submit</button>
+</div>
 <div *ngIf="updateDetailWanted">
   <label>Enter the Id for update</label>
   <input type="text" class="form-control" [(ngModel)]="detailIdToDeleteOrUpdate">
@@ -40,6 +57,7 @@
     <th style="border: 1px solid #000000;">Email</th>
     <th style="border: 1px solid #000000;">Share Link</th>
     <th style="border: 1px solid #000000;">Order Link</th>
+    <th style="border: 1px solid #000000;">Photo</th>
   </tr>
   </thead>
   <tbody>
@@ -64,6 +82,7 @@
     <td style="border: 1px solid #000000;">{{weat.email}}</td>
     <td style="border: 1px solid #000000;">{{weat.shareLink}}</td>
     <td style="border: 1px solid #000000;">{{weat.orderLink}}</td>
+    <td style="border: 1px solid #000000;"><img class="busiImage" src="{{weat.homeImage}}" /></td>
     <!--td style="border: 1px solid #000000;"><button class="btn-outline-warning">Update</button></td>
     <td><&nbsp;></td>
     <td style="border: 1px solid #000000;"><button class="btn-danger">Delete</button></td-->
@@ -96,14 +115,24 @@
   <input type="text" class="form-control" [(ngModel)]="detailIsHotBussiness">
   <label>Rate</label>
   <input type="text" class="form-control" [(ngModel)]="detailRate">
-  <label>Listing Type Id</label>
-  <input type="text" class="form-control" [(ngModel)]="detailListingTypeId">
-  <label>Listing Type Name</label>
-  <input type="text" class="form-control" [(ngModel)]="detailListingTypeName">
+  <label>Type of Business</label>
+  <input type="text" class="form-control" [disabled]="true" [(ngModel)]="detailListingTypeName">
+  <button class="btn-primary" (click)="onChangeTypeOfBusiness()">Change the Type of Business</button>
+  <!--input type="text" class="form-control" [(ngModel)]="detailListingTypeId"-->
+  <div *ngIf="showChangeOnBusinessType">
+    <div *ngFor="let coun of listOfListingTypes">
+    <input name="options" ng-control="options" type="radio" [value]="coun.id" [(ngModel)]="chosenType.id">{{coun.name}}
+    </div>
+  </div>
+  <!--label>Type of Business</label>
+  <input type="text" class="form-control" [(ngModel)]="detailListingTypeName"-->
+  <hr>
   <label>Website</label>
   <input type="text" class="form-control" [(ngModel)]="detailWebsite">
-  <label>Location</label>
-  <input type="text" class="form-control" [(ngModel)]="detailLocation">
+  <label>Location Latitude</label>
+  <input type="text" class="form-control" [(ngModel)]="detailLocationLatitude">
+  <label>Location Longitude</label>
+  <input type="text" class="form-control" [(ngModel)]="detailLocationLongitude">
   <label>Phone</label>
   <input type="text" class="form-control" [(ngModel)]="detailPhone">
   <label>Email</label>
@@ -115,4 +144,62 @@
   <hr>
   <!--p *ngIf="eventName.length>0 && eventNote.length>0">{{allowNewEvent}}=true</p-->
   <button class="btn btn-primary" (click)="onSubmitDataToUpdateDetail()">Submit</button>
+</div>
+
+<div *ngIf="newDetailFormWanted">
+  <h3>All fields are mandatory, unless otherwise stated!</h3>
+  <hr>
+  <label>Name</label>
+  <input type="text" class="form-control" [(ngModel)]="detailName2">
+  <label>Note</label>
+  <input type="text" class="form-control" [(ngModel)]="detailNote2">
+  <label>Street Number and Name</label>
+  <input type="text" class="form-control" [(ngModel)]="detailAddress222">
+  <label>Province and Postal Code</label>
+  <input type="text" class="form-control" [(ngModel)]="detailAddress22">
+  <label>Description</label>
+  <input type="text" class="form-control" [(ngModel)]="detailDescription2">
+  <label>Facebook</label>
+  <input type="text" class="form-control" [(ngModel)]="detailFacebook2">
+  <label>Instagram</label>
+  <input type="text" class="form-control" [(ngModel)]="detailInstagram2">
+  <label>YouTube</label>
+  <input type="text" class="form-control" [(ngModel)]="detailYoutube2">
+  <label>Hot Business</label>
+  <input type="text" class="form-control" [(ngModel)]="detailIsHotBussiness2">
+  <label>Rate</label>
+  <input type="text" class="form-control" [(ngModel)]="detailRate2">
+  <label>Type of Business</label>
+  <!--input type="text" class="form-control" [disabled]="true" [(ngModel)]="detailListingTypeName">
+  <button class="btn-primary" (click)="onChangeTypeOfBusiness()">Change the Type of Business</button-->
+  <div>
+    <div *ngFor="let coun of listOfListingTypes">
+      <input name="options" ng-control="options" type="radio" [value]="coun.id" [(ngModel)]="chosenType2.id">{{coun.name}}
+    </div>
+  </div>
+  <hr>
+  <label>Website</label>
+  <input type="text" class="form-control" [(ngModel)]="detailWebsite2">
+  <label>Location Latitude</label>
+  <input type="text" class="form-control" [(ngModel)]="detailLocationLatitude2">
+  <label>Location Longitude</label>
+  <input type="text" class="form-control" [(ngModel)]="detailLocationLongitude2">
+  <label>Phone</label>
+  <input type="text" class="form-control" [(ngModel)]="detailPhone2">
+  <label>Email</label>
+  <input type="text" class="form-control" [(ngModel)]="detailEmail2">
+  <label>Share Link</label>
+  <input type="text" class="form-control" [(ngModel)]="detailShareLink2">
+  <label>Order Link</label>
+  <input type="text" class="form-control" [(ngModel)]="detailOrderLink2">
+  <div style="text-align:center">
+    <div [innerHtml]='msg' style="color: red;"></div>
+    <div><img [src]="url" *ngIf="url"></div>
+    <p>
+      <input type="file" (change)="selectFile($event)">
+    </p>
+    <button class="btn-primary" (click)="onConfirmPhotoEvent()">Confirm</button>
+  </div>
+  <hr>
+  <button class="btn btn-primary" (click)="onSubmitDataToNewDetail()">Submit</button>
 </div>

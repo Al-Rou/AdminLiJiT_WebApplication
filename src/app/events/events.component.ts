@@ -130,6 +130,7 @@ export class EventsComponent{
       alert(this.eventIdToDeleteOrUpdate);
       this.goForUploadPhotoEvent(this.objectToUpdateEvent, this.eventIdToDeleteOrUpdate);
       this.changePhotoWanted = false;
+      this.photoConfirmed = false;
     }else{
       alert('Something went worng!');
     }
@@ -314,6 +315,7 @@ export class EventsComponent{
     this.deleteEventNow(this.eventIdToDeleteOrUpdate);
   }
   onAddEvent(){
+    this.photoWanted = false;
     this.updateWanted = false;
     this.deleteWanted = false;
     this.listOfEvents = [];
@@ -322,7 +324,7 @@ export class EventsComponent{
   onSubmitNewEvent(){
     if(this.eventName!=='' && this.eventNote!=='' && this.eventEmail!=='' && this.eventPhone!=='' && this.eventAddress1!=='' &&
       this.eventDescription!=='' && this.eventOrganizer!=='' && this.eventEndDate!==undefined && this.eventStartDate!==undefined && this.eventShareLink!=='' &&
-      this.eventLocation!==''){
+      this.eventLocation!=='' && this.photoConfirmed === true && this.base64textString !== ''){
       this.firstEntryUpcomingEvents = {
         id: 0,
         name: this.eventName,
@@ -332,7 +334,7 @@ export class EventsComponent{
         description: this.eventDescription,
         startDate: this.eventStartDate,
         endDate: this.eventEndDate,
-        imageEvent: '',
+        imageEvent: this.base64textString,
         location: this.eventLocation,
         phone: this.eventPhone,
         email: this.eventEmail,

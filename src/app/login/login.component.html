@@ -1,7 +1,9 @@
-<h3>This is Login Page</h3>
+
 <label>Username</label>
 <input type="text" class="form-control" [(ngModel)]="userName" placeholder="Enter username">
 <label>Password</label>
-<input type="text" class="form-control" [(ngModel)]="passWord" placeholder="Enter password">
+<input [type]="hide ? 'password' : 'text'" class="form-control" [(ngModel)]="passWord" placeholder="Enter password">
+<button class="btn-primary" (click)="onShowPassword()" [innerText]="hide ? 'Show Password' : 'Hide Password'"></button>
+<hr>
 <button class="btn-primary" (click)="onGetToken()">Sign in</button>
 <h2 [(ngModel)]="waitingMessage">{{waitingMessage}}</h2>

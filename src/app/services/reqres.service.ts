@@ -22,7 +22,11 @@ export class ReqresService{
   private urlGetAbout = 'https://adminlijit.azurewebsites.net/AboutContent/About';
   private urlUpdateAbout = 'https://adminlijit.azurewebsites.net/AboutContent/Update?id=';
   private urlGetAllTypes = 'https://adminlijit.azurewebsites.net/ListingType/Category';
+  private urlToCreateNewType = 'https://adminlijit.azurewebsites.net/ListingType/Create';
+  private urlUpdateType = 'https://adminlijit.azurewebsites.net/ListingType/Update?id=';
   private urlGetAllBusinesses = 'https://adminlijit.azurewebsites.net/ListingDetail/Stores';
+  private urlToUpdateDetail = 'https://adminlijit.azurewebsites.net/ListingDetail/Update?id=';
+  private urlToCreateNewDetail = 'https://adminlijit.azurewebsites.net/ListingDetail/Create';
   private urlToCreateNewEvent = 'https://adminlijit.azurewebsites.net/Events/Create';
   private urlToUpdateEvent = 'https://adminlijit.azurewebsites.net/Events/Update?id=';
   private urlToDeleteEvent = 'https://adminlijit.azurewebsites.net/Events/Delete?id=';
@@ -263,6 +267,45 @@ export class ReqresService{
       alert('The event was successfully updated!');
     });
   }
+  async uploadPhotoForDetail(updatedDto: Detail, idForUpdate: string){
+    const headerDict = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+ this.tokenValue,
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headerDict)
+    };
+    const requestBody = {
+      name: updatedDto.name,
+      address: updatedDto.address,
+      address2: updatedDto.address2,
+      description: updatedDto.description,
+      phone: updatedDto.phone,
+      email: updatedDto.email,
+      location: updatedDto.location,
+      note: updatedDto.note,
+      website: updatedDto.website,
+      rate: updatedDto.rate,
+      listingTypeId: updatedDto.listingTypeId,
+      listingTypeName: updatedDto.listingTypeName,
+      isHotBussiness: updatedDto.isHotBussiness,
+      facebook: updatedDto.facebook,
+      instagram: updatedDto.instagram,
+      youtube: updatedDto.youtube,
+      shareLink: updatedDto.shareLink,
+      homeImage: updatedDto.homeImage,
+      orderLink: updatedDto.orderLink
+    }
+    if(updatedDto.homeImage !== ''){
+      alert('Photo not empty');
+    }else {
+      alert('Receive by reqres' + updatedDto.id);
+    }
+    alert("this is post in ReqresService!");
+    this.http.put<Detail>(this.urlToUpdateDetail+idForUpdate, requestBody, requestOptions).subscribe(res =>{
+      alert('The event was successfully updated!');
+    });
+  }
 
   async setUpdateAboutContent(newAbout: About){
     const headerDict = {
@@ -285,9 +328,114 @@ export class ReqresService{
       email: newAbout.email,
       shareLink: newAbout.shareLink
     }
-    alert('Receive by reqres'+newAbout.id);
+    alert('Receive by reqres '+newAbout.id+'-'+newAbout.email);
     this.http.put<About>(this.urlUpdateAbout+newAbout.id, requestBody, requestOptions).subscribe(res =>{
       alert('Changes on About are successfully stored!');
+    });
+  }
+  async putUpdateBusinessDetail(updatedDto: Detail){
+    const headerDict = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+ this.tokenValue,
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headerDict)
+    };
+    const requestBody = {
+      name: updatedDto.name,
+      address: updatedDto.address,
+      address2: updatedDto.address2,
+      description: updatedDto.description,
+      phone: updatedDto.phone,
+      email: updatedDto.email,
+      location: updatedDto.location,
+      note: updatedDto.note,
+      website: updatedDto.website,
+      rate: updatedDto.rate,
+      listingTypeId: updatedDto.listingTypeId,
+      listingTypeName: updatedDto.listingTypeName,
+      isHotBussiness: updatedDto.isHotBussiness,
+      facebook: updatedDto.facebook,
+      instagram: updatedDto.instagram,
+      youtube: updatedDto.youtube,
+      shareLink: updatedDto.shareLink,
+      homeImage: updatedDto.homeImage,
+      orderLink: updatedDto.orderLink
+    }
+    alert("this is in ReqresService " + updatedDto.listingTypeName);
+    this.http.put<Detail>(this.urlToUpdateDetail+updatedDto.id, requestBody, requestOptions).subscribe(res =>{
+      alert('The event was successfully updated!');
+    });
+  }
+  async setNewBusinessDetail(newDetail: Detail){
+    const headerDict = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+ this.tokenValue,
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headerDict)
+    };
+    const requestBody = {
+      id: 0,
+      name: newDetail.name,
+      address: newDetail.address,
+      address2: newDetail.address2,
+      description: newDetail.description,
+      phone: newDetail.phone,
+      email: newDetail.email,
+      location: newDetail.location,
+      note: newDetail.note,
+      website: newDetail.website,
+      rate: newDetail.rate,
+      listingTypeId: newDetail.listingTypeId,
+      listingTypeName: newDetail.listingTypeName,
+      isHotBussiness: newDetail.isHotBussiness,
+      facebook: newDetail.facebook,
+      instagram: newDetail.instagram,
+      youtube: newDetail.youtube,
+      shareLink: newDetail.shareLink,
+      homeImage: newDetail.homeImage,
+      orderLink: newDetail.orderLink
+    }
+    alert("this is post in ReqresService!");
+    this.http.post<Detail>(this.urlToCreateNewDetail, requestBody, requestOptions).subscribe(res =>{
+      alert('The event was successfully stored!');
+    });
+  }
+  async setNewBusinessType(newType: Type){
+    const headerDict = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+ this.tokenValue,
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headerDict)
+    };
+    const requestBody = {
+      id: 0,
+      name: newType.name,
+      description: newType.description
+    }
+    alert("this is post in ReqresService!");
+    this.http.post<Type>(this.urlToCreateNewType, requestBody, requestOptions).subscribe(res =>{
+      alert('The event was successfully stored!');
+    });
+  }
+  async setUpdateBusinessTypePlease(updatedType: Type, updatedId: string){
+    const headerDict = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+ this.tokenValue,
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headerDict)
+    };
+    const requestBody = {
+      id: 0,
+      name: updatedType.name,
+      description: updatedType.description
+    }
+    alert('Receive by reqres '+updatedType.id);
+    this.http.put<Type>(this.urlUpdateType+updatedId, requestBody, requestOptions).subscribe(res =>{
+      alert('Changes on Type are successfully stored!');
     });
   }
 

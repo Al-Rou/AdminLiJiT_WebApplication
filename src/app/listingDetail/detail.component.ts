@@ -1,5 +1,6 @@
 import {Component} from "@angular/core";
 import {ReqresService} from "../services/reqres.service";
+import {Type} from "../listingType/type.component";
 
 
 @Component({
@@ -12,8 +13,19 @@ export class DetailComponetnt{
   updateDetailWanted = false;
   deleteDetailWanted = false;
   updateDataDetail = false;
+  newDetailFormWanted = false;
   detailIdToDeleteOrUpdate = '';
   firstEntryDetail: Detail | undefined;
+  changePhotoWanted = false;
+  changePhotoFormWanted = false;
+  url: any;
+  msg = '';
+  selectedFile: File | undefined;
+  base64textString = '';
+  photoConfirmed = false;
+  listOfListingTypes: Type[] = [];
+  entryForFillingList: Type | undefined;
+  showChangeOnBusinessType = false;
 
   detailId = 0;
   detailName = '';
@@ -23,6 +35,8 @@ export class DetailComponetnt{
   detailPhone = '';
   detailEmail = '';
   detailLocation = '';
+  detailLocationLatitude = '';
+  detailLocationLongitude = '';
   detailNote = '';
   detailWebsite = '';
   detailRate = 0;
@@ -36,9 +50,111 @@ export class DetailComponetnt{
   detailHomeImage = '';
   detailOrderLink = '';
 
+  detailName2 = '';
+  detailAddress222 = '';
+  detailAddress22 = '';
+  detailDescription2 = '';
+  detailPhone2 = '';
+  detailEmail2 = '';
+  detailLocation2 = '';
+  detailLocationLatitude2 = '';
+  detailLocationLongitude2 = '';
+  detailNote2 = '';
+  detailWebsite2 = '';
+  detailRate2 = 0;
+  detailListingTypeId2 = 0;
+  detailListingTypeName2 = '';
+  detailIsHotBussiness2 = false;
+  detailFacebook2 = '';
+  detailInstagram2 = '';
+  detailYoutube2 = '';
+  detailShareLink2 = '';
+  detailOrderLink2 = '';
+
 
   constructor(private reqresService: ReqresService) {
 
+  }
+
+  selectFile(event: any) {
+    if(!event.target.files[0] || event.target.files[0].length == 0) {
+      this.msg = 'You must select an image';
+      return;
+    }
+    this.selectedFile = <File> event.target.files[0];
+    var mimeType = event.target.files[0].type;
+    if (mimeType.match(/image\/*/) == null) {
+      this.msg = "Only images are supported";
+      return;
+    }
+    var reader = new FileReader();
+    reader.readAsDataURL(event.target.files[0]);
+    reader.onload = (_event) => {
+      this.msg = "";
+      this.url = reader.result;
+    }
+  }
+  _handleReaderLoaded(readerEvt: any) {
+    var binaryString = readerEvt.target.result;
+    this.base64textString= btoa(binaryString);
+  }
+  onConfirmPhotoEvent() {
+    if (this.selectedFile !== undefined) {
+      var reader = new FileReader();
+      reader.onload = this._handleReaderLoaded.bind(this);
+      reader.readAsBinaryString(this.selectedFile);
+      this.photoConfirmed = true;
+    } else {
+      alert('No photo is chosen!');
+      return;
+    }
+  }
+  onUploadPhotoDetail(){
+    for(let j = 0; j < this.listOfDetails.length; j++) {
+      this.firstEntryDetail = {
+        id: this.listOfDetails[j].id,
+        name: this.listOfDetails[j].name,
+        address: this.listOfDetails[j].address,
+        address2: this.listOfDetails[j].address2,
+        description: this.listOfDetails[j].description,
+        phone: this.listOfDetails[j].phone,
+        email: this.listOfDetails[j].email,
+        location: this.listOfDetails[j].location,
+        note: this.listOfDetails[j].note,
+        website: this.listOfDetails[j].website,
+        rate: this.listOfDetails[j].rate,
+        listingTypeId: this.listOfDetails[j].listingTypeId,
+        listingTypeName: this.listOfDetails[j].listingTypeName,
+        isHotBussiness: this.listOfDetails[j].isHotBussiness,
+        facebook: this.listOfDetails[j].facebook,
+        instagram: this.listOfDetails[j].instagram,
+        youtube: this.listOfDetails[j].youtube,
+        shareLink: this.listOfDetails[j].shareLink,
+        homeImage: this.base64textString,
+        orderLink: this.listOfDetails[j].orderLink
+      }
+      break;
+    }
+    if(this.firstEntryDetail !== undefined) {
+      if (this.firstEntryDetail.homeImage !== '') {
+        alert('image is full');
+        //console.log(this.objectToUpdateEvent.imageEvent);
+      }
+      alert(this.detailIdToDeleteOrUpdate);
+      this.goForUploadPhotoDetail(this.firstEntryDetail, this.detailIdToDeleteOrUpdate);
+      this.changePhotoWanted = false;
+      this.photoConfirmed = false;
+    }else{
+      alert('Something went worng!');
+    }
+  }
+  async goForUploadPhotoDetail(updatedDetailDto: Detail, updatedId: string){
+    (await this.reqresService.uploadPhotoForDetail(updatedDetailDto, updatedId));
+    this.listOfDetails = [];
+    this.changePhotoFormWanted = false;
+    this.changePhotoWanted = false;
+    this.url = undefined;
+    this.detailIdToDeleteOrUpdate = '';
   }
 
   async getAllBusinesses(){
@@ -70,21 +186,49 @@ export class DetailComponetnt{
       }
     })
   }
+  async fillListingTypes(){
+    (await this.reqresService.getTypes()).subscribe((res) => {
+      for(let j = 0; j < res.length; j++){
+        this.entryForFillingList = {
+          id: (res[j] as any).id,
+          name: (res[j] as any).name,
+          description: (res[j] as any).description
+        }
+        this.listOfListingTypes.push(this.entryForFillingList);
+      }
+    })
+  }
+  async sendDtoToService(updatedDto: Detail){
+    (await this.reqresService.putUpdateBusinessDetail(updatedDto));
+  }
+  async sendDtoToServiceToCreate(newDetailDto: Detail){
+    (await this.reqresService.setNewBusinessDetail(newDetailDto));
+  }
 
   onUpdateDetail(){
+    this.changePhotoFormWanted = false;
+    this.changePhotoWanted = false;
     this.updateDetailWanted = true;
     this.deleteDetailWanted = false;
     this.updateDataDetail = false;
+    this.newDetailFormWanted = false;
   }
   onDeleteDetail(){
+    this.newDetailFormWanted = false;
+    this.changePhotoFormWanted = false;
+    this.changePhotoWanted = false;
     this.updateDetailWanted = false;
     this.deleteDetailWanted = true;
     this.updateDataDetail = false;
   }
   onSubmitUpdateDetail(){
+    this.newDetailFormWanted = false;
+    this.changePhotoFormWanted = false;
+    this.changePhotoWanted = false;
     this.deleteDetailWanted = false;
     this.updateDetailWanted = false;
     for(let j = 0; j < this.listOfDetails.length; j++){
+      let aux = '';
       if(this.listOfDetails[j].id.toString() === this.detailIdToDeleteOrUpdate){
         this.detailId = this.listOfDetails[j].id;
         this.detailName = this.listOfDetails[j].name;
@@ -93,7 +237,29 @@ export class DetailComponetnt{
         this.detailDescription = this.listOfDetails[j].description;
         this.detailPhone = this.listOfDetails[j].phone;
         this.detailEmail = this.listOfDetails[j].email;
-        this.detailLocation = this.listOfDetails[j].location;
+
+        for(let k = 0; k < this.listOfDetails[j].location.length;) {
+          if (this.listOfDetails[j].location[k] === ' ') {
+            k++;
+          } else if (this.listOfDetails[j].location[k] !== ',') {
+            aux += this.listOfDetails[j].location[k];
+            k++;
+          } else {
+            this.detailLocationLatitude = aux;
+            aux = '';
+            k++;
+            for (let kk = k; kk < this.listOfDetails[j].location.length;) {
+              if (this.listOfDetails[j].location[kk] === ' ') {
+                kk++;
+              } else {
+                aux += this.listOfDetails[j].location[kk];
+                kk++;
+              }
+            }
+            this.detailLocationLongitude = aux;
+            break;
+          }
+        }
         this.detailNote = this.listOfDetails[j].note;
         this.detailWebsite = this.listOfDetails[j].website;
         this.detailRate = this.listOfDetails[j].rate;
@@ -114,21 +280,170 @@ export class DetailComponetnt{
     this.listOfDetails = [];
     this.updateDataDetail = true;
   }
+  onChangePhotoDetail(){
+    this.newDetailFormWanted = false;
+    this.changePhotoFormWanted = false;
+    this.changePhotoWanted = true;
+  }
   onSubmitDeleteDetail(){
     alert('Id ' + this.detailIdToDeleteOrUpdate + 'is going to be deleted');
   }
+  chosenType = {
+    id: 0,
+    name: 'no name',
+    description: 'no description'
+  };
+  chosenType2 = {
+    id: 0,
+    name: 'no name',
+    description: 'no description'
+  };
   onSubmitDataToUpdateDetail(){
-
+    if(this.chosenType !== undefined) {
+      alert(this.chosenType?.id);
+    }
+    if(this.chosenType.id === 0 || !this.showChangeOnBusinessType) {
+      let auxLocation = this.detailLocationLatitude + ', ' + this.detailLocationLongitude;
+      this.firstEntryDetail = {
+        id: this.detailId,
+        name: this.detailName,
+        address: this.detailAddress,
+        address2: this.detailAddress2,
+        description: this.detailDescription,
+        phone: this.detailPhone,
+        email: this.detailEmail,
+        location: auxLocation,
+        note: this.detailNote,
+        website: this.detailWebsite,
+        rate: this.detailRate,
+        listingTypeId: this.detailListingTypeId,
+        listingTypeName: this.detailListingTypeName,
+        isHotBussiness: this.detailIsHotBussiness,
+        facebook: this.detailFacebook,
+        instagram: this.detailInstagram,
+        youtube: this.detailYoutube,
+        shareLink: this.detailShareLink,
+        homeImage: this.detailHomeImage,
+        orderLink: this.detailOrderLink
+      }
+    }else if(this.chosenType.id !== 0 && this.showChangeOnBusinessType){
+      let namOfType = '';
+      for (let k = 0; k < this.listOfListingTypes.length; k++){
+        if(this.listOfListingTypes[k].id === this.chosenType.id){
+          namOfType = this.listOfListingTypes[k].name;
+          alert(namOfType);
+          alert(this.chosenType.id);
+          break;
+        }
+      }
+      let auxLocation = this.detailLocationLatitude + ', ' + this.detailLocationLongitude;
+      this.firstEntryDetail = {
+        id: this.detailId,
+        name: this.detailName,
+        address: this.detailAddress,
+        address2: this.detailAddress2,
+        description: this.detailDescription,
+        phone: this.detailPhone,
+        email: this.detailEmail,
+        location: auxLocation,
+        note: this.detailNote,
+        website: this.detailWebsite,
+        rate: this.detailRate,
+        listingTypeId: this.chosenType.id,
+        listingTypeName: namOfType,
+        isHotBussiness: this.detailIsHotBussiness,
+        facebook: this.detailFacebook,
+        instagram: this.detailInstagram,
+        youtube: this.detailYoutube,
+        shareLink: this.detailShareLink,
+        homeImage: this.detailHomeImage,
+        orderLink: this.detailOrderLink
+      }
+    }
+    this.updateDataDetail = false;
+    this.listOfListingTypes = [];
+    this.detailIdToDeleteOrUpdate = '';
+    if(this.firstEntryDetail !== undefined) {
+      this.sendDtoToService(this.firstEntryDetail);
+    }
+  }
+  onSubmitDataToNewDetail(){
+    if(this.chosenType2.id === 0) {
+      alert('Business Type has to be chosen!');
+      return;
+    }else{
+      let namOfType = '';
+      for (let k = 0; k < this.listOfListingTypes.length; k++){
+        if(this.listOfListingTypes[k].id === this.chosenType2.id){
+          namOfType = this.listOfListingTypes[k].name;
+          alert(namOfType);
+          alert(this.chosenType2.id);
+          break;
+        }
+      }
+      let auxLocation = this.detailLocationLatitude2 + ', ' + this.detailLocationLongitude2;
+      this.firstEntryDetail = {
+        id: 0,
+        name: this.detailName2,
+        address: this.detailAddress222,
+        address2: this.detailAddress22,
+        description: this.detailDescription2,
+        phone: this.detailPhone2,
+        email: this.detailEmail2,
+        location: auxLocation,
+        note: this.detailNote2,
+        website: this.detailWebsite2,
+        rate: this.detailRate2,
+        listingTypeId: this.chosenType2.id,
+        listingTypeName: namOfType,
+        isHotBussiness: this.detailIsHotBussiness2,
+        facebook: this.detailFacebook2,
+        instagram: this.detailInstagram2,
+        youtube: this.detailYoutube2,
+        shareLink: this.detailShareLink2,
+        homeImage: this.base64textString,
+        orderLink: this.detailOrderLink2
+      }
+      this.newDetailFormWanted = false;
+      this.listOfListingTypes = [];
+      this.detailIdToDeleteOrUpdate = '';
+      if(this.firstEntryDetail !== undefined) {
+        this.sendDtoToServiceToCreate(this.firstEntryDetail);
+      }
+    }
   }
   onShowAllDetail(){
+    this.listOfListingTypes = [];
+    this.newDetailFormWanted = false;
+    this.changePhotoFormWanted = false;
+    this.changePhotoWanted = false;
     this.updateDetailWanted = false;
     this.deleteDetailWanted = false;
+    this.listOfDetails = [];
     this.getAllBusinesses();
+    this.fillListingTypes();
   }
   onAddNewDetail(){
+    this.listOfListingTypes = [];
+    this.newDetailFormWanted = true;
+    this.changePhotoWanted = false;
     this.updateDetailWanted = false;
     this.deleteDetailWanted = false;
+    this.changePhotoFormWanted = false;
+    this.listOfDetails = [];
+    this.fillListingTypes();
   }
+  onSubmitChangePhotoDetail(){
+    this.newDetailFormWanted = false;
+    this.changePhotoWanted = false;
+    this.updateDetailWanted = false;
+    this.deleteDetailWanted = false;
+    this.changePhotoFormWanted = true;
+  }
+  onChangeTypeOfBusiness(){
+    this.showChangeOnBusinessType = true;
+  }
+
 }
 
 export interface Detail{

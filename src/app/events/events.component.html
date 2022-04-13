@@ -1,4 +1,4 @@
-<h3>This is the page of Events</h3>
+<h3>Events</h3>
 <button class="btn-primary" (click)="onShowAllEvents()">Show All Events</button>
 <&nbsp;>
 <button class="btn-primary" (click)="onShowUpcomingEvents()">Show Upcoming Events</button>
@@ -150,6 +150,15 @@
   <input type="text" class="form-control" [(ngModel)]="eventShareLink">
   <label>Organizer</label>
   <input type="text" class="form-control" [(ngModel)]="eventOrganizer">
+  <div style="text-align:center">
+    <div [innerHtml]='msg' style="color: red;"></div>
+    <div><img [src]="url" *ngIf="url"></div>
+    <p>
+      <input type="file" (change)="selectFile($event)">
+    </p>
+    <button class="btn-primary" (click)="onConfirmPhotoEvent()">Confirm</button>
+    <!--button class="btn-primary" [disabled]="!photoConfirmed" (click)="onUploadPhotoEvent()">Upload</button-->
+  </div>
   <hr>
   <!--p *ngIf="eventName.length>0 && eventNote.length>0">{{allowNewEvent}}=true</p-->
   <button class="btn btn-primary" [disabled]="allowNewEvent" (click)="onSubmitNewEvent()">Submit</button>
