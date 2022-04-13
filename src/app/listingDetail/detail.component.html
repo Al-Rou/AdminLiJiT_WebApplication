@@ -166,7 +166,12 @@
   <label>YouTube</label>
   <input type="text" class="form-control" [(ngModel)]="detailYoutube2">
   <label>Hot Business</label>
-  <input type="text" class="form-control" [(ngModel)]="detailIsHotBussiness2">
+  <!--input type="text" class="form-control" [(ngModel)]="detailIsHotBussiness2"-->
+  <div>
+    <input name="hotoptions" ng-control="hotoptions" type="radio" [value]="'true'" [(ngModel)]="hotBiz">Yes
+    <input name="hotoptions" ng-control="hotoptions" type="radio" [value]="'false'" [(ngModel)]="hotBiz">No
+  </div>
+  <hr>
   <label>Rate</label>
   <input type="text" class="form-control" [(ngModel)]="detailRate2">
   <label>Type of Business</label>

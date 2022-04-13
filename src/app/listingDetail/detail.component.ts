@@ -70,6 +70,7 @@ export class DetailComponetnt{
   detailYoutube2 = '';
   detailShareLink2 = '';
   detailOrderLink2 = '';
+  hotBiz = 'false';
 
 
   constructor(private reqresService: ReqresService) {
@@ -364,52 +365,82 @@ export class DetailComponetnt{
     this.listOfListingTypes = [];
     this.detailIdToDeleteOrUpdate = '';
     if(this.firstEntryDetail !== undefined) {
+      alert(this.detailIsHotBussiness);
       this.sendDtoToService(this.firstEntryDetail);
     }
   }
   onSubmitDataToNewDetail(){
-    if(this.chosenType2.id === 0) {
-      alert('Business Type has to be chosen!');
-      return;
-    }else{
-      let namOfType = '';
-      for (let k = 0; k < this.listOfListingTypes.length; k++){
-        if(this.listOfListingTypes[k].id === this.chosenType2.id){
-          namOfType = this.listOfListingTypes[k].name;
-          alert(namOfType);
-          alert(this.chosenType2.id);
-          break;
+    if(this.selectedFile === undefined){
+      alert('Choose a photo and press confirm button!');
+    }
+    else if(
+      this.detailName2 !== '' &&
+      this.detailAddress222 !== '' &&
+      this.detailAddress22 !== '' &&
+      this.detailDescription2 !== '' &&
+      this.detailPhone2 !== '' &&
+      this.detailEmail2 !== '' &&
+      this.detailLocationLatitude2 !== '' &&
+      this.detailLocationLongitude2 !== '' &&
+      this.detailNote2 !== '' &&
+      this.detailWebsite2 !== '' &&
+      this.detailFacebook2 !== '' &&
+      this.detailInstagram2 !== '' &&
+      this.detailYoutube2 !== '' &&
+      this.detailShareLink2 !== '' &&
+      this.detailOrderLink2 !== ''
+    ) {
+      if (this.chosenType2.id === 0) {
+        alert('Business Type has to be chosen!');
+        return;
+      } else {
+        let namOfType = '';
+        for (let k = 0; k < this.listOfListingTypes.length; k++) {
+          if (this.listOfListingTypes[k].id === this.chosenType2.id) {
+            namOfType = this.listOfListingTypes[k].name;
+            alert(namOfType);
+            alert(this.chosenType2.id);
+            break;
+          }
+        }
+        let auxLocation = this.detailLocationLatitude2 + ', ' + this.detailLocationLongitude2;
+        if(this.hotBiz === 'true'){
+          this.detailIsHotBussiness2 = true;
+        }else if(this.hotBiz === 'false'){
+          this.detailIsHotBussiness2 = false;
+        }
+        this.firstEntryDetail = {
+          id: 0,
+          name: this.detailName2,
+          address: this.detailAddress222,
+          address2: this.detailAddress22,
+          description: this.detailDescription2,
+          phone: this.detailPhone2,
+          email: this.detailEmail2,
+          location: auxLocation,
+          note: this.detailNote2,
+          website: this.detailWebsite2,
+          rate: this.detailRate2,
+          listingTypeId: this.chosenType2.id,
+          listingTypeName: namOfType,
+          isHotBussiness: this.detailIsHotBussiness2,
+          facebook: this.detailFacebook2,
+          instagram: this.detailInstagram2,
+          youtube: this.detailYoutube2,
+          shareLink: this.detailShareLink2,
+          homeImage: this.base64textString,
+          orderLink: this.detailOrderLink2
+        }
+        this.newDetailFormWanted = false;
+        this.listOfListingTypes = [];
+        this.detailIdToDeleteOrUpdate = '';
+        if (this.firstEntryDetail !== undefined) {
+          alert(this.detailIsHotBussiness2);
+          this.sendDtoToServiceToCreate(this.firstEntryDetail);
         }
       }
-      let auxLocation = this.detailLocationLatitude2 + ', ' + this.detailLocationLongitude2;
-      this.firstEntryDetail = {
-        id: 0,
-        name: this.detailName2,
-        address: this.detailAddress222,
-        address2: this.detailAddress22,
-        description: this.detailDescription2,
-        phone: this.detailPhone2,
-        email: this.detailEmail2,
-        location: auxLocation,
-        note: this.detailNote2,
-        website: this.detailWebsite2,
-        rate: this.detailRate2,
-        listingTypeId: this.chosenType2.id,
-        listingTypeName: namOfType,
-        isHotBussiness: this.detailIsHotBussiness2,
-        facebook: this.detailFacebook2,
-        instagram: this.detailInstagram2,
-        youtube: this.detailYoutube2,
-        shareLink: this.detailShareLink2,
-        homeImage: this.base64textString,
-        orderLink: this.detailOrderLink2
-      }
-      this.newDetailFormWanted = false;
-      this.listOfListingTypes = [];
-      this.detailIdToDeleteOrUpdate = '';
-      if(this.firstEntryDetail !== undefined) {
-        this.sendDtoToServiceToCreate(this.firstEntryDetail);
-      }
+    }else{
+      alert('All fields are not filled yet!'+this.hotBiz+this.chosenType2.id);
     }
   }
   onShowAllDetail(){
