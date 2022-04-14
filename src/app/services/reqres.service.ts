@@ -30,8 +30,8 @@ export class ReqresService{
   private urlToCreateNewEvent = 'https://adminlijit.azurewebsites.net/Events/Create';
   private urlToUpdateEvent = 'https://adminlijit.azurewebsites.net/Events/Update?id=';
   private urlToDeleteEvent = 'https://adminlijit.azurewebsites.net/Events/Delete?id=';
-  //The token is
-  // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6IkxpSmlUIiwibmJmIjoxNjQ5MzkwMzY3LCJleHAiOjE2NDk0MDgzNjcsImlhdCI6MTY0OTM5MDM2N30.Q5HxG_4b-lLM-_v3KS7PDG-mNb0lJTJF6q_0g6FKd2o
+  private urlToDeleteDetail = 'https://adminlijit.azurewebsites.net/ListingDetail/Delete?id=';
+
   tokenValue = '';
   constructor(private http: HttpClient) {
 
@@ -47,7 +47,6 @@ export class ReqresService{
       "UserName":"LiJiT",
       "Password":"1234"
     }
-    alert('Go for JWT');
     return this.http.post<TokenLiJiT>(this.urlGetJWT, requestBody, requestOptions);
   }
   async getWeather(): Promise<Observable<Weather[]>> {
@@ -57,10 +56,8 @@ export class ReqresService{
     const requestOptions = {
       headers: new HttpHeaders(headerDict)
     };
-    alert('ReqresService is called');
     return this.http.get<Weather[]>(this.urlWeather, requestOptions);
   }
-
   async getAllEvents(): Promise<Observable<UpComingEvent[]>> {
     const headerDict = {
       'Content-Type': 'application/json',
@@ -69,10 +66,8 @@ export class ReqresService{
     const requestOptions = {
       headers: new HttpHeaders(headerDict)
     };
-    alert('ReqresService is called');
     return this.http.get<UpComingEvent[]>(this.urlAllEvents, requestOptions);
   }
-
   async getUpcomingEvents(): Promise<Observable<UpComingEvent[]>> {
     const headerDict = {
       'Content-Type': 'application/json',
@@ -81,7 +76,6 @@ export class ReqresService{
     const requestOptions = {
       headers: new HttpHeaders(headerDict)
     };
-    alert('ReqresService is called');
     return this.http.get<UpComingEvent[]>(this.urlUpcomingEvents, requestOptions);
   }
   async getTypes(): Promise<Observable<Type[]>> {
@@ -94,7 +88,6 @@ export class ReqresService{
     };
     return this.http.get<Type[]>(this.urlGetAllTypes, requestOptions);
   }
-
   async getBusiness(): Promise<Observable<Detail[]>> {
     const headerDict = {
       'Content-Type': 'application/json',
@@ -105,7 +98,6 @@ export class ReqresService{
     };
     return this.http.get<Detail[]>(this.urlGetAllBusinesses, requestOptions);
   }
-
   async getAbout(): Promise<Observable<About>> {
     const headerDict = {
       'Content-Type': 'application/json',
@@ -114,10 +106,8 @@ export class ReqresService{
     const requestOptions = {
       headers: new HttpHeaders(headerDict)
     };
-    alert("req is called");
     return this.http.get<About>(this.urlGetAbout, requestOptions);
   }
-
   async setUpcomingEvent(newEvent: UpComingEvent){
     const headerDict = {
       'Content-Type': 'application/json',
@@ -142,9 +132,8 @@ export class ReqresService{
       shareLink: newEvent.shareLink,
       organizer: newEvent.organizer
     }
-    alert("this is post in ReqresService!");
     this.http.post<UpComingEvent>(this.urlToCreateNewEvent, requestBody, requestOptions).subscribe(res =>{
-      alert('The event was successfully stored!');
+      alert('The Event was successfully stored!');
     });
   }
   async putUpdateEvent(updatedEve: UpComingEvent, idForUpdate: string){
@@ -170,9 +159,8 @@ export class ReqresService{
       shareLink: updatedEve.shareLink,
       organizer: updatedEve.organizer
     }
-    alert("this is post in ReqresService!");
     this.http.put<UpComingEvent>(this.urlToUpdateEvent+idForUpdate, requestBody, requestOptions).subscribe(res =>{
-      alert('The event was successfully updated!');
+      alert('The Event was successfully updated!');
     });
   }
   async removeEvent(idToRemove: string){
@@ -183,25 +171,20 @@ export class ReqresService{
     const requestOptions = {
       headers: new HttpHeaders(headerDict)
     };
-    // const requestBody = {
-    //   id: 0,
-    //   name: newEvent.name,
-    //   note: newEvent.note,
-    //   address: newEvent.address,
-    //   address2: newEvent.address2,
-    //   description: newEvent.description,
-    //   startDate: newEvent.startDate,
-    //   endDate: newEvent.endDate,
-    //   imageEvent: newEvent.imageEvent,
-    //   location: newEvent.location,
-    //   phone: newEvent.phone,
-    //   email: newEvent.email,
-    //   shareLink: newEvent.shareLink,
-    //   organizer: newEvent.organizer
-    // }
-    alert("this is delete in ReqresService!");
     this.http.delete<UpComingEvent>(this.urlToDeleteEvent+idToRemove, requestOptions).subscribe(res =>{
-      alert('The event was successfully deleted!');
+      alert('The Event was successfully deleted!');
+    });
+  }
+  async removeDetail(idToRemove: string){
+    const headerDict = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+ this.tokenValue,
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headerDict)
+    };
+    this.http.delete<Detail>(this.urlToDeleteDetail+idToRemove, requestOptions).subscribe(res =>{
+      alert('The Business was successfully deleted!');
     });
   }
   async uploadPhotoForAbout(newAbout: About){
@@ -225,11 +208,11 @@ export class ReqresService{
       email: newAbout.email,
       shareLink: newAbout.shareLink
     }
-    if(newAbout.imageAbout !== ''){
-      alert('Photo not empty');
-    }else {
-      alert('Receive by reqres' + newAbout.id);
-    }
+    // if(newAbout.imageAbout !== ''){
+    //   alert('Photo not empty');
+    // }else {
+    //   alert('Receive by reqres' + newAbout.id);
+    // }
     this.http.put<About>(this.urlUpdateAbout+newAbout.id, requestBody, requestOptions).subscribe(res =>{
       alert('Changes on About are successfully stored!');
     });
@@ -257,14 +240,13 @@ export class ReqresService{
       shareLink: updatedEve.shareLink,
       organizer: updatedEve.organizer
     }
-    if(updatedEve.imageEvent !== ''){
-      alert('Photo not empty');
-    }else {
-      alert('Receive by reqres' + updatedEve.id);
-    }
-    alert("this is post in ReqresService!");
+    // if(updatedEve.imageEvent !== ''){
+    //   alert('Photo not empty');
+    // }else {
+    //   alert('Receive by reqres' + updatedEve.id);
+    // }
     this.http.put<UpComingEvent>(this.urlToUpdateEvent+idForUpdate, requestBody, requestOptions).subscribe(res =>{
-      alert('The event was successfully updated!');
+      alert('Changes on Event are successfully stored!');
     });
   }
   async uploadPhotoForDetail(updatedDto: Detail, idForUpdate: string){
@@ -296,17 +278,15 @@ export class ReqresService{
       homeImage: updatedDto.homeImage,
       orderLink: updatedDto.orderLink
     }
-    if(updatedDto.homeImage !== ''){
-      alert('Photo not empty');
-    }else {
-      alert('Receive by reqres' + updatedDto.id);
-    }
-    alert("this is post in ReqresService!");
+    // if(updatedDto.homeImage !== ''){
+    //   alert('Photo not empty');
+    // }else {
+    //   alert('Receive by reqres' + updatedDto.id);
+    // }
     this.http.put<Detail>(this.urlToUpdateDetail+idForUpdate, requestBody, requestOptions).subscribe(res =>{
-      alert('The event was successfully updated!');
+      alert('Changes on the Business are successfully stored!');
     });
   }
-
   async setUpdateAboutContent(newAbout: About){
     const headerDict = {
       'Content-Type': 'application/json',
@@ -328,7 +308,6 @@ export class ReqresService{
       email: newAbout.email,
       shareLink: newAbout.shareLink
     }
-    alert('Receive by reqres '+newAbout.id+'-'+newAbout.email);
     this.http.put<About>(this.urlUpdateAbout+newAbout.id, requestBody, requestOptions).subscribe(res =>{
       alert('Changes on About are successfully stored!');
     });
@@ -362,9 +341,8 @@ export class ReqresService{
       homeImage: updatedDto.homeImage,
       orderLink: updatedDto.orderLink
     }
-    alert("this is in ReqresService " + updatedDto.listingTypeName);
     this.http.put<Detail>(this.urlToUpdateDetail+updatedDto.id, requestBody, requestOptions).subscribe(res =>{
-      alert('The event was successfully updated!');
+      alert('Changes on the Business are successfully stored!');
     });
   }
   async setNewBusinessDetail(newDetail: Detail){
@@ -397,9 +375,8 @@ export class ReqresService{
       homeImage: newDetail.homeImage,
       orderLink: newDetail.orderLink
     }
-    alert("this is post in ReqresService!");
     this.http.post<Detail>(this.urlToCreateNewDetail, requestBody, requestOptions).subscribe(res =>{
-      alert('The event was successfully stored!');
+      alert('The Business was successfully stored!');
     });
   }
   async setNewBusinessType(newType: Type){
@@ -415,9 +392,8 @@ export class ReqresService{
       name: newType.name,
       description: newType.description
     }
-    alert("this is post in ReqresService!");
     this.http.post<Type>(this.urlToCreateNewType, requestBody, requestOptions).subscribe(res =>{
-      alert('The event was successfully stored!');
+      alert('The Business Type was successfully stored!');
     });
   }
   async setUpdateBusinessTypePlease(updatedType: Type, updatedId: string){
@@ -435,9 +411,8 @@ export class ReqresService{
     }
     alert('Receive by reqres '+updatedType.id);
     this.http.put<Type>(this.urlUpdateType+updatedId, requestBody, requestOptions).subscribe(res =>{
-      alert('Changes on Type are successfully stored!');
+      alert('Changes on the Business Type are successfully stored!');
     });
   }
-
 
 }

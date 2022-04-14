@@ -66,7 +66,6 @@ export class EventsComponent{
   constructor(private reqresService: ReqresService) {
 
   }
-
   selectFile(event: any) {
     if(!event.target.files[0] || event.target.files[0].length == 0) {
       this.msg = 'You must select an image';
@@ -123,23 +122,22 @@ export class EventsComponent{
       break;
     }
     if(this.objectToUpdateEvent !== undefined) {
-      if (this.objectToUpdateEvent.imageEvent !== '') {
-        alert('image is full');
-        console.log(this.objectToUpdateEvent.imageEvent);
-      }
-      alert(this.eventIdToDeleteOrUpdate);
+      // if (this.objectToUpdateEvent.imageEvent !== '') {
+      //   alert('image is full');
+      //   console.log(this.objectToUpdateEvent.imageEvent);
+      // }
       this.goForUploadPhotoEvent(this.objectToUpdateEvent, this.eventIdToDeleteOrUpdate);
       this.changePhotoWanted = false;
       this.photoConfirmed = false;
     }else{
-      alert('Something went worng!');
+      alert('Something went worng!\nTry again later!');
     }
   }
   async goForUploadPhotoEvent(dtoEvent: UpComingEvent, idToChange: string){
     (await this.reqresService.uploadPhotoForEvent(dtoEvent, idToChange));
     this.listOfEvents = [];
+    this.url = undefined;
   }
-
   async getAllEvents(){
       (await this.reqresService.getAllEvents()).subscribe((res) => {
         if(res.length === 0){
@@ -147,9 +145,6 @@ export class EventsComponent{
         }
         for(let j = 0; j < res.length; j++) {
           this.firstEntryAllEvents = {
-            // date: (res[j] as any).date,
-            // temperatureC: (res[j] as any).temperatureC,
-            // summary: (res[j] as any).summary
             id: (res[j] as any).id,
             name: (res[j] as any).name,
             note: (res[j] as any).note,
@@ -192,15 +187,14 @@ export class EventsComponent{
       }
     });
   }
-
   async setUpcomingEvent(newEvent: UpComingEvent){
     (await this.reqresService.setUpcomingEvent(newEvent));
   }
   async putUpdateEvent(updatedEve: UpComingEvent, idForUpdate: string){
     (await this.reqresService.putUpdateEvent(updatedEve, idForUpdate));
   }
-  async deleteEventNow(idForUpdate: string){
-    (await this.reqresService)
+  async deleteEventNow(idForDelete: string){
+    (await this.reqresService.removeEvent(idForDelete));
   }
   onShowAllEvents(){
     this.photoWanted = false;
@@ -210,7 +204,6 @@ export class EventsComponent{
     this.deleteWanted = false;
     this.newEventWanted = false;
     this.listOfEvents = [];
-    alert('Button is clicked');
     this.getAllEvents();
   }
   onShowUpcomingEvents(){
@@ -261,7 +254,6 @@ export class EventsComponent{
   onSubmitUpdateEvent(){
     this.updateFormWanted = true;
     this.updateWanted = false;
-    alert('Id ' + this.eventIdToDeleteOrUpdate + ' will be updated');
     for(let j = 0; j < this.listOfEvents.length; j++){
       if(this.listOfEvents[j].id.toString() === this.eventIdToDeleteOrUpdate){
         this.eventId2 = this.listOfEvents[j].id.toString();
@@ -311,8 +303,10 @@ export class EventsComponent{
     }
   }
   onSubmitDeleteEvent(){
-    alert('Are you sure to delete event with Id ' + this.eventIdToDeleteOrUpdate + ' ?');
+    alert('You are about to delete event with Id ' + this.eventIdToDeleteOrUpdate);
     this.deleteEventNow(this.eventIdToDeleteOrUpdate);
+    this.deleteWanted = false;
+    this.listOfEvents = [];
   }
   onAddEvent(){
     this.photoWanted = false;
@@ -343,11 +337,11 @@ export class EventsComponent{
       }
       this.setUpcomingEvent(this.firstEntryUpcomingEvents);
       this.newEventWanted = false;
+      this.url = undefined;
     }else {
       alert("All mandatory fields are not filled yet!");
     }
   }
-
 }
 export interface Weather {
   date: Date;

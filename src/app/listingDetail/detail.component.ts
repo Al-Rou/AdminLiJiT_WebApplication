@@ -76,7 +76,6 @@ export class DetailComponetnt{
   constructor(private reqresService: ReqresService) {
 
   }
-
   selectFile(event: any) {
     if(!event.target.files[0] || event.target.files[0].length == 0) {
       this.msg = 'You must select an image';
@@ -137,11 +136,9 @@ export class DetailComponetnt{
       break;
     }
     if(this.firstEntryDetail !== undefined) {
-      if (this.firstEntryDetail.homeImage !== '') {
-        alert('image is full');
-        //console.log(this.objectToUpdateEvent.imageEvent);
-      }
-      alert(this.detailIdToDeleteOrUpdate);
+      // if (this.firstEntryDetail.homeImage !== '') {
+      //   alert('image is full');
+      // }
       this.goForUploadPhotoDetail(this.firstEntryDetail, this.detailIdToDeleteOrUpdate);
       this.changePhotoWanted = false;
       this.photoConfirmed = false;
@@ -157,7 +154,6 @@ export class DetailComponetnt{
     this.url = undefined;
     this.detailIdToDeleteOrUpdate = '';
   }
-
   async getAllBusinesses(){
     (await this.reqresService.getBusiness()).subscribe((res) => {
       for(let j = 0; j < res.length; j++){
@@ -205,7 +201,9 @@ export class DetailComponetnt{
   async sendDtoToServiceToCreate(newDetailDto: Detail){
     (await this.reqresService.setNewBusinessDetail(newDetailDto));
   }
-
+  async sendDeleteToService(idToDelete: string){
+    (await this.reqresService.removeDetail(idToDelete));
+  }
   onUpdateDetail(){
     this.changePhotoFormWanted = false;
     this.changePhotoWanted = false;
@@ -238,7 +236,6 @@ export class DetailComponetnt{
         this.detailDescription = this.listOfDetails[j].description;
         this.detailPhone = this.listOfDetails[j].phone;
         this.detailEmail = this.listOfDetails[j].email;
-
         for(let k = 0; k < this.listOfDetails[j].location.length;) {
           if (this.listOfDetails[j].location[k] === ' ') {
             k++;
@@ -277,7 +274,6 @@ export class DetailComponetnt{
         break;
       }
     }
-
     this.listOfDetails = [];
     this.updateDataDetail = true;
   }
@@ -287,7 +283,11 @@ export class DetailComponetnt{
     this.changePhotoWanted = true;
   }
   onSubmitDeleteDetail(){
-    alert('Id ' + this.detailIdToDeleteOrUpdate + 'is going to be deleted');
+    alert('Id ' + this.detailIdToDeleteOrUpdate + 'is about to be deleted!');
+    this.sendDeleteToService(this.detailIdToDeleteOrUpdate);
+    this.deleteDetailWanted = false;
+    this.listOfDetails = [];
+    this.detailIdToDeleteOrUpdate = '';
   }
   chosenType = {
     id: 0,
@@ -332,8 +332,6 @@ export class DetailComponetnt{
       for (let k = 0; k < this.listOfListingTypes.length; k++){
         if(this.listOfListingTypes[k].id === this.chosenType.id){
           namOfType = this.listOfListingTypes[k].name;
-          alert(namOfType);
-          alert(this.chosenType.id);
           break;
         }
       }
@@ -365,7 +363,6 @@ export class DetailComponetnt{
     this.listOfListingTypes = [];
     this.detailIdToDeleteOrUpdate = '';
     if(this.firstEntryDetail !== undefined) {
-      alert(this.detailIsHotBussiness);
       this.sendDtoToService(this.firstEntryDetail);
     }
   }
@@ -398,8 +395,6 @@ export class DetailComponetnt{
         for (let k = 0; k < this.listOfListingTypes.length; k++) {
           if (this.listOfListingTypes[k].id === this.chosenType2.id) {
             namOfType = this.listOfListingTypes[k].name;
-            alert(namOfType);
-            alert(this.chosenType2.id);
             break;
           }
         }
@@ -435,12 +430,11 @@ export class DetailComponetnt{
         this.listOfListingTypes = [];
         this.detailIdToDeleteOrUpdate = '';
         if (this.firstEntryDetail !== undefined) {
-          alert(this.detailIsHotBussiness2);
           this.sendDtoToServiceToCreate(this.firstEntryDetail);
         }
       }
     }else{
-      alert('All fields are not filled yet!'+this.hotBiz+this.chosenType2.id);
+      alert('All fields are not filled yet!');
     }
   }
   onShowAllDetail(){
@@ -474,7 +468,6 @@ export class DetailComponetnt{
   onChangeTypeOfBusiness(){
     this.showChangeOnBusinessType = true;
   }
-
 }
 
 export interface Detail{

@@ -21,7 +21,6 @@ export class TypeComponent{
   constructor(private reqresService: ReqresService) {
 
   }
-
   async getAllTypes(){
     (await this.reqresService.getTypes()).subscribe((res) => {
       for(let j = 0; j < res.length; j++){
@@ -40,7 +39,6 @@ export class TypeComponent{
   async putUpdateDataType(updatedTypeDto: Type, updatedId: string){
     (await this.reqresService.setUpdateBusinessTypePlease(updatedTypeDto, updatedId));
   }
-
   onShowAllTypes(){
     this.updateFormWanted = false;
     this.updateWanted = false;
@@ -66,18 +64,15 @@ export class TypeComponent{
       alert("All mandatory fields are not filled yet!");
     }
   }
-
   onUpdateType(){
     this.updateWanted = true;
     this.updateFormWanted = false;
-
   }
   onDeleteType(){
 
   }
   onSubmitUpdateType(){
     this.updateWanted = false;
-    alert('Update Request on id ' + this.typeIdToUpdate + ' is submitted!');
     for(let j = 0; j < this.listOfType.length; j++){
       if(this.listOfType[j].id.toString() === this.typeIdToUpdate){
         this.typeId = this.typeIdToUpdate;
@@ -99,8 +94,6 @@ export class TypeComponent{
     }
     this.putUpdateDataType(this.firstEntryType, this.typeIdToUpdate);
   }
-
-
 }
 
 export interface Type{

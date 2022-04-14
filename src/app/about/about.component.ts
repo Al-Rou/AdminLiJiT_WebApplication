@@ -78,7 +78,7 @@ export class AboutComponent{
     var binaryString = readerEvt.target.result;
     this.base64textString= btoa(binaryString);
     //console.log(btoa(binaryString));
-    console.log(this.base64textString);
+    //console.log(this.base64textString);
   }
   onConfirmPhotoAbout() {
     if (this.selectedFile !== undefined) {
@@ -106,10 +106,9 @@ export class AboutComponent{
       email: this.aboutEmail,
       shareLink: this.aboutShareLink
     }
-    if(this.objectToUpdateAbout.imageAbout !== '') {
-      alert('image is full');
-      //console.log(this.base64textString);
-    }
+    // if(this.objectToUpdateAbout.imageAbout !== '') {
+    //   alert('image is full');
+    // }
     this.goForUploadPhoto(this.objectToUpdateAbout);
     this.changePhotoFormWanted = false;
   }
@@ -184,7 +183,6 @@ export class AboutComponent{
       email: this.aboutEmail,
       shareLink: this.aboutShareLink
     }
-    alert('Send to dto'+this.objectToUpdateAbout.email);
     this.setUpdateAbout(this.objectToUpdateAbout);
     this.updateAboutWanted = false;
   }

@@ -84,17 +84,17 @@
   <tr>
     <th style="border: 1px solid #000000;">number</th>
     <th style="border: 1px solid #000000;">Id</th>
-    <th style="border: 1px solid #000000;">Name</th>
+    <th style="border: 1px solid #000000;">NameOfEvent</th>
     <th style="border: 1px solid #000000;">Note</th>
-    <th style="border: 1px solid #000000;">Address</th>
-    <th style="border: 1px solid #000000;">Address2</th>
+    <th style="border: 1px solid #000000;">StreetNumberAndName</th>
+    <th style="border: 1px solid #000000;">ProvinceAndPostalCode</th>
     <th style="border: 1px solid #000000;">Description</th>
     <th style="border: 1px solid #000000;">Start Date</th>
     <th style="border: 1px solid #000000;">End Date</th>
-    <th style="border: 1px solid #000000;">Location</th>
-    <th style="border: 1px solid #000000;">Phone</th>
+    <th style="border: 1px solid #000000;">Venue</th>
+    <th style="border: 1px solid #000000;">Telephone</th>
     <th style="border: 1px solid #000000;">Email</th>
-    <th style="border: 1px solid #000000;">Share Link</th>
+    <th style="border: 1px solid #000000;">Link to share</th>
     <th style="border: 1px solid #000000;">Organizer</th>
     <th style="border: 1px solid #000000;">Photo</th>
   </tr>
@@ -126,13 +126,13 @@
 <div *ngIf="newEventWanted">
   <h3>All fields are mandatory, unless otherwise stated!</h3>
   <hr>
-  <label>Name</label>
+  <label>Name of Event</label>
   <input type="text" class="form-control" [(ngModel)]="eventName">
   <label>Note</label>
   <input type="text" class="form-control" [(ngModel)]="eventNote">
-  <label>Address1</label>
+  <label>Street Number and Name</label>
   <input type="text" class="form-control" [(ngModel)]="eventAddress1">
-  <label>Address2(optional)</label>
+  <label>Province and Postal Code</label>
   <input type="text" class="form-control" [(ngModel)]="eventAddress2">
   <label>Description</label>
   <input type="text" class="form-control" [(ngModel)]="eventDescription">
@@ -140,13 +140,13 @@
   <input type="datetime-local" class="form-control" [(ngModel)]="eventStartDate">
   <label>End Date</label>
   <input type="datetime-local" class="form-control" [(ngModel)]="eventEndDate">
-  <label>Location</label>
+  <label>Venue</label>
   <input type="text" class="form-control" [(ngModel)]="eventLocation">
   <label>Phone</label>
   <input type="text" class="form-control" [(ngModel)]="eventPhone">
   <label>Email</label>
   <input type="text" class="form-control" [(ngModel)]="eventEmail">
-  <label>Share Link</label>
+  <label>Link to share</label>
   <input type="text" class="form-control" [(ngModel)]="eventShareLink">
   <label>Organizer</label>
   <input type="text" class="form-control" [(ngModel)]="eventOrganizer">
@@ -169,13 +169,13 @@
   <hr>
   <label>Id</label>
   <input type="text" class="form-control" [disabled]="true" [(ngModel)]="eventId2">
-  <label>Name</label>
+  <label>Name of Event</label>
   <input type="text" class="form-control" [(ngModel)]="eventName2">
   <label>Note</label>
   <input type="text" class="form-control" [(ngModel)]="eventNote2">
-  <label>Address1</label>
+  <label>Street Number and Name</label>
   <input type="text" class="form-control" [(ngModel)]="eventAddress12">
-  <label>Address2(optional)</label>
+  <label>Province and Postal Code</label>
   <input type="text" class="form-control" [(ngModel)]="eventAddress22">
   <label>Description</label>
   <input type="text" class="form-control" [(ngModel)]="eventDescription2">
@@ -183,13 +183,13 @@
   <input type="datetime-local" class="form-control" [(ngModel)]="eventStartDate2">
   <label>End Date</label>
   <input type="datetime-local" class="form-control" [(ngModel)]="eventEndDate2">
-  <label>Location</label>
+  <label>Venue</label>
   <input type="text" class="form-control" [(ngModel)]="eventLocation2">
   <label>Phone</label>
   <input type="text" class="form-control" [(ngModel)]="eventPhone2">
   <label>Email</label>
   <input type="text" class="form-control" [(ngModel)]="eventEmail2">
-  <label>Share Link</label>
+  <label>Link to share</label>
   <input type="text" class="form-control" [(ngModel)]="eventShareLink2">
   <label>Organizer</label>
   <input type="text" class="form-control" [(ngModel)]="eventOrganizer2">
