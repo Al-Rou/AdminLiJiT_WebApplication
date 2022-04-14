@@ -103,23 +103,25 @@ export class EventsComponent{
   }
   onUploadPhotoEvent(){
     for(let j = 0; j < this.listOfEvents.length; j++) {
-      this.objectToUpdateEvent = {
-        id: 0,
-        name: this.listOfEvents[j].name,
-        note: this.listOfEvents[j].note,
-        address: this.listOfEvents[j].address,
-        address2: this.listOfEvents[j].address2,
-        description: this.listOfEvents[j].description,
-        startDate: this.listOfEvents[j].startDate,
-        endDate: this.listOfEvents[j].endDate,
-        imageEvent: this.base64textString,
-        location: this.listOfEvents[j].location,
-        phone: this.listOfEvents[j].phone,
-        email: this.listOfEvents[j].email,
-        shareLink: this.listOfEvents[j].shareLink,
-        organizer: this.listOfEvents[j].organizer
+      if (this.listOfEvents[j].id.toString() === this.eventIdToDeleteOrUpdate) {
+        this.objectToUpdateEvent = {
+          id: 0,
+          name: this.listOfEvents[j].name,
+          note: this.listOfEvents[j].note,
+          address: this.listOfEvents[j].address,
+          address2: this.listOfEvents[j].address2,
+          description: this.listOfEvents[j].description,
+          startDate: this.listOfEvents[j].startDate,
+          endDate: this.listOfEvents[j].endDate,
+          imageEvent: this.base64textString,
+          location: this.listOfEvents[j].location,
+          phone: this.listOfEvents[j].phone,
+          email: this.listOfEvents[j].email,
+          shareLink: this.listOfEvents[j].shareLink,
+          organizer: this.listOfEvents[j].organizer
+        }
+        break;
       }
-      break;
     }
     if(this.objectToUpdateEvent !== undefined) {
       // if (this.objectToUpdateEvent.imageEvent !== '') {
@@ -132,6 +134,7 @@ export class EventsComponent{
     }else{
       alert('Something went worng!\nTry again later!');
     }
+    this.photoConfirmed = false;
   }
   async goForUploadPhotoEvent(dtoEvent: UpComingEvent, idToChange: string){
     (await this.reqresService.uploadPhotoForEvent(dtoEvent, idToChange));
@@ -275,6 +278,7 @@ export class EventsComponent{
       }
     }
     this.listOfEvents = [];
+    this.photoConfirmed = false;
   }
   onSubmitDataForUpdateEvent(){
     if(this.eventName2!=='' && this.eventNote2!=='' && this.eventEmail2!=='' && this.eventPhone2!=='' && this.eventAddress12!=='' &&
@@ -339,8 +343,9 @@ export class EventsComponent{
       this.newEventWanted = false;
       this.url = undefined;
     }else {
-      alert("All mandatory fields are not filled yet!");
+      alert("Mandatory fields not filled yet or photo not confirmed!");
     }
+    this.photoConfirmed = false;
   }
 }
 export interface Weather {

@@ -28,7 +28,7 @@ export class LoginComponent{
       this.waitingMessage = 'It takes some while. Please be patient...';
       //this.getTokenPlease();
       //this.checkToken();
-      this.reqresService.tokenValue = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6IkxpSmlUIiwibmJmIjoxNjQ5OTE1MDQxLCJleHAiOjE2NDk5MzMwNDEsImlhdCI6MTY0OTkxNTA0MX0.5f99BstmPAkGz5DK2DD2IjTC38lG_Myuu0qooTAcQ_k';
+      this.reqresService.tokenValue = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6IkxpSmlUIiwibmJmIjoxNjQ5OTUzOTQ3LCJleHAiOjE2NDk5NzE5NDcsImlhdCI6MTY0OTk1Mzk0N30.R6KiPpnvHsYab1_JUk6LLhNblTYJ_HVd7z36n8GJ4jY';
 
       //this.reqresService.tokenValue = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6IkxpSmlUIiwibmJmIjoxNjQ5ODc2NzE4LCJleHAiOjE2NDk4OTQ3MTgsImlhdCI6MTY0OTg3NjcxOH0.NlZxrlB89WRNvhHH4dgdDd7cEAedat1p6l4CDAcKQ5I'; // local
 
