@@ -1,7 +1,7 @@
 <h3>About the Little Jamaica</h3>
 <button class="btn-primary" (click)="onShowAbout()">Show</button>
 <&nbsp;>
-<button class="btn-outline-warning" [disabled]="!allowUpdate" (click)="onUpdateAbout()">Update</button>
+<button class="btn-outline-warning" [disabled]="!showCreate" (click)="onCreateAbout()">Create</button>
 <&nbsp;>
 <button class="btn-outline-warning" [disabled]="!allowUpdate" (click)="onChangePhotoAbout()">Change Photo</button>
 <hr>
@@ -19,6 +19,7 @@
   <thead>
   <tr>
     <!--th style="border: 1px solid #000000;">number</th-->
+    <th></th>
     <th style="border: 1px solid #000000;">FirstTitle</th>
     <th style="border: 1px solid #000000;">FirstContent</th>
     <th style="border: 1px solid #000000;">SecondTitle</th>
@@ -35,6 +36,7 @@
   <tbody>
   <tr *ngFor="let weat of listOfAbout; let i = index">
     <!--td style="border: 1px solid #000000;">{{i+1}}</td-->
+    <td><button class="btn-outline-warning" [disabled]="!allowUpdate" (click)="onUpdateAbout()">Update</button></td>
     <td style="border: 1px solid #000000;">{{weat.title1}}</td>
     <td style="border: 1px solid #000000;">{{weat.content1}}</td>
     <td style="border: 1px solid #000000;">{{weat.title2}}</td>
@@ -46,7 +48,6 @@
     <td style="border: 1px solid #000000;">{{weat.email}}</td>
     <td style="border: 1px solid #000000;">{{weat.shareLink}}</td>
     <td style="border: 1px solid #000000;"><img class="aboutImage" src="{{weat.imageAbout}}" /></td>
-    <!--td style="border: 1px solid #000000;"><button class="btn-outline-warning">Update</button></td-->
   </tr>
   </tbody>
 </table>
@@ -77,4 +78,40 @@
   <hr>
   <!--p *ngIf="eventName.length>0 && eventNote.length>0">{{allowNewEvent}}=true</p-->
   <button class="btn btn-primary" (click)="onSubmitUpdateAbout()">Submit</button>
+</div>
+
+<div *ngIf="createAboutWanted">
+  <h3>All fields are mandatory, unless otherwise stated!</h3>
+  <hr>
+  <label>First Title</label>
+  <input type="text" class="form-control" [(ngModel)]="aboutTitle13">
+  <label>First Content</label>
+  <input type="text" class="form-control" [(ngModel)]="aboutContent13">
+  <label>Second Title</label>
+  <input type="text" class="form-control" [(ngModel)]="aboutTitle23">
+  <label>Second Content</label>
+  <input type="text" class="form-control" [(ngModel)]="aboutContent23">
+  <label>Facebook</label>
+  <input type="text" class="form-control" [(ngModel)]="aboutFacebook3">
+  <label>Twitter</label>
+  <input type="text" class="form-control" [(ngModel)]="aboutTwitter3">
+  <label>Instagram</label>
+  <input type="text" class="form-control" [(ngModel)]="aboutInstagram3">
+  <label>Phone</label>
+  <input type="text" class="form-control" [(ngModel)]="aboutTelephone3">
+  <label>Email</label>
+  <input type="text" class="form-control" [(ngModel)]="aboutEmail3">
+  <label>Share Link</label>
+  <input type="text" class="form-control" [(ngModel)]="aboutShareLink3">
+  <div style="text-align:center">
+    <div [innerHtml]='msg' style="color: red;"></div>
+    <div><img [src]="url" *ngIf="url"></div>
+    <p>
+      <input type="file" (change)="selectFile($event)">
+    </p>
+    <button class="btn-primary" (click)="onConfirmPhotoAbout()">Confirm</button>
+  </div>
+  <hr>
+  <!--p *ngIf="eventName.length>0 && eventNote.length>0">{{allowNewEvent}}=true</p-->
+  <button class="btn btn-primary" (click)="onSubmitCreateAbout()">Submit</button>
 </div>

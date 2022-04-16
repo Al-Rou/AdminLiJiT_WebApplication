@@ -28,9 +28,9 @@ export class LoginComponent{
       this.waitingMessage = 'It takes some while. Please be patient...';
       //this.getTokenPlease();
       //this.checkToken();
-      this.reqresService.tokenValue = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6IkxpSmlUIiwibmJmIjoxNjQ5OTUzOTQ3LCJleHAiOjE2NDk5NzE5NDcsImlhdCI6MTY0OTk1Mzk0N30.R6KiPpnvHsYab1_JUk6LLhNblTYJ_HVd7z36n8GJ4jY';
+      this.reqresService.tokenValue = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6IkxpSmlUIiwibmJmIjoxNjUwMDc3NTUyLCJleHAiOjE2NTAwOTU1NTIsImlhdCI6MTY1MDA3NzU1Mn0.OQT5qsMkbhXqHjfxwak4gPZllOrwJCtIBcgJ6hg9eJ0';
 
-      //this.reqresService.tokenValue = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6IkxpSmlUIiwibmJmIjoxNjQ5ODc2NzE4LCJleHAiOjE2NDk4OTQ3MTgsImlhdCI6MTY0OTg3NjcxOH0.NlZxrlB89WRNvhHH4dgdDd7cEAedat1p6l4CDAcKQ5I'; // local
+      //this.reqresService.tokenValue = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6IkxpSmlUIiwibmJmIjoxNjUwMDU0MTU4LCJleHAiOjE2NTAwNzIxNTgsImlhdCI6MTY1MDA1NDE1OH0.qq1Cy9JIAXwPfi_JBlH7CT3oTsY-Dj9mte6WZ2_8hKE'; // local
 
       this.firstComp.adminAuthorized = true;
       this.firstComp.loginPageClicked = false;

@@ -71,7 +71,7 @@ export class DetailComponetnt{
   detailShareLink2 = '';
   detailOrderLink2 = '';
   hotBiz = 'false';
-
+  hotBiz2 = 'false';
 
   constructor(private reqresService: ReqresService) {
 
@@ -274,6 +274,11 @@ export class DetailComponetnt{
         break;
       }
     }
+    if(this.detailIsHotBussiness === true){
+      this.hotBiz2 = 'true';
+    }else{
+      this.hotBiz2 = 'false';
+    }
     this.listOfDetails = [];
     this.updateDataDetail = true;
   }
@@ -300,8 +305,13 @@ export class DetailComponetnt{
     description: 'no description'
   };
   onSubmitDataToUpdateDetail(){
-    if(this.chosenType !== undefined) {
-      alert(this.chosenType?.id);
+    // if(this.chosenType !== undefined) {
+    //   alert(this.chosenType?.id);
+    // }
+    if(this.hotBiz2 === 'true'){
+      this.detailIsHotBussiness = true;
+    }else if(this.hotBiz2 === 'false'){
+      this.detailIsHotBussiness = false;
     }
     if(this.chosenType.id === 0 || !this.showChangeOnBusinessType) {
       let auxLocation = this.detailLocationLatitude + ', ' + this.detailLocationLongitude;

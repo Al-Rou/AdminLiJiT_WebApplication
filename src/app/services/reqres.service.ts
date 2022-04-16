@@ -25,7 +25,9 @@ export class ReqresService{
   private urlToCreateNewType = 'https://adminlijit.azurewebsites.net/ListingType/Create';
   private urlUpdateType = 'https://adminlijit.azurewebsites.net/ListingType/Update?id=';
   private urlGetAllBusinesses = 'https://adminlijit.azurewebsites.net/ListingDetail/Stores';
-  private urlToUpdateDetail = 'https://adminlijit.azurewebsites.net/ListingDetail/Update?id=';
+  //private urlGetAllBusinesses = 'https://localhost:37432/ListingDetail/Stores';
+  private urlToUpdateDetail = 'https://adminlijit.azurewebsites.net/ListingDetail/Update?id=';  // https://localhost:40527/
+  //private urlToUpdateDetail = 'https://localhost:37432/ListingDetail/Update?id=';
   private urlToCreateNewDetail = 'https://adminlijit.azurewebsites.net/ListingDetail/Create';
   private urlToCreateNewEvent = 'https://adminlijit.azurewebsites.net/Events/Create';
   private urlToUpdateEvent = 'https://adminlijit.azurewebsites.net/Events/Update?id=';
@@ -159,6 +161,7 @@ export class ReqresService{
       shareLink: updatedEve.shareLink,
       organizer: updatedEve.organizer
     }
+    alert(requestBody.endDate);
     this.http.put<UpComingEvent>(this.urlToUpdateEvent+idForUpdate, requestBody, requestOptions).subscribe(res =>{
       alert('The Event was successfully updated!');
     });
@@ -341,6 +344,7 @@ export class ReqresService{
       homeImage: updatedDto.homeImage,
       orderLink: updatedDto.orderLink
     }
+    alert(updatedDto.isHotBussiness + ', ' + updatedDto.id);
     this.http.put<Detail>(this.urlToUpdateDetail+updatedDto.id, requestBody, requestOptions).subscribe(res =>{
       alert('Changes on the Business are successfully stored!');
     });
@@ -394,6 +398,31 @@ export class ReqresService{
     }
     this.http.post<Type>(this.urlToCreateNewType, requestBody, requestOptions).subscribe(res =>{
       alert('The Business Type was successfully stored!');
+    });
+  }
+  async setNewCreateAboutForFirstTime(newAbout: About){
+    const headerDict = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+ this.tokenValue,
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headerDict)
+    };
+    const requestBody = {
+      title1: newAbout.title1,
+      title2: newAbout.title2,
+      content1: newAbout.content1,
+      content2: newAbout.content2,
+      imageAbout: newAbout.imageAbout,
+      facebook: newAbout.facebook,
+      twitter: newAbout.twitter,
+      instagram: newAbout.instagram,
+      telephon: newAbout.telephon,
+      email: newAbout.email,
+      shareLink: newAbout.shareLink
+    }
+    this.http.post<About>(this.urlToCreateNewType, requestBody, requestOptions).subscribe(res =>{
+      alert('About Section was successfully stored!');
     });
   }
   async setUpdateBusinessTypePlease(updatedType: Type, updatedId: string){

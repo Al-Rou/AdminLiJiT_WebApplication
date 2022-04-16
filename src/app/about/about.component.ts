@@ -11,6 +11,7 @@ export class AboutComponent{
   listOfAbout: About[] = [];
   firstEntryAbout: About | undefined;
   updateAboutWanted = false;
+  createAboutWanted = false;
   changePhotoFormWanted = false;
   allowUpdate = false;
   objectToUpdateAbout: About | undefined;
@@ -33,8 +34,42 @@ export class AboutComponent{
   aboutEmail = '';
   aboutShareLink = '';
 
+  aboutTitle13 = '';
+  aboutTitle23 = '';
+  aboutContent13 = '';
+  aboutContent23 = '';
+  aboutImageAbout3 = '';
+  aboutFacebook3 = '';
+  aboutTwitter3 = '';
+  aboutInstagram3 = '';
+  aboutTelephone3 = '';
+  aboutEmail3 = '';
+  aboutShareLink3 = '';
+
+  showCreate = false;
+
+
   constructor(private reqresService: ReqresService) {
 
+  }
+
+  async ngOnInit(){
+    (await this.reqresService.getAbout()).subscribe((res) => {
+      this.showCreate = false;
+      return;
+      // if (res.id === 1){
+      //   alert(res.id);
+      //   this.showCreate = false;
+      //   return;
+      // }else{
+      //   this.showCreate = true;
+      //   return;
+      // }
+    });
+    this.showCreate = true;
+  }
+  async delay(ms: number){
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   selectFile(event: any) {
@@ -111,15 +146,17 @@ export class AboutComponent{
     // }
     this.goForUploadPhoto(this.objectToUpdateAbout);
     this.changePhotoFormWanted = false;
+    this.photoConfirmed = false;
   }
   async goForUploadPhoto(dtoAbout: About){
     (await this.reqresService.uploadPhotoForAbout(dtoAbout));
+    this.url = undefined;
   }
 
   async getAboutContent(){
     (await this.reqresService.getAbout()).subscribe((res) => {
       //for(let j = 0; j < res.length; j++) {
-        alert("About is taken");
+
         this.firstEntryAbout = {
           id: (res as any).id,
           title1: (res as any).title1,
@@ -154,16 +191,25 @@ export class AboutComponent{
   }
 
   onShowAbout(){
+    this.createAboutWanted = false;
     this.changePhotoFormWanted = false;
     this.updateAboutWanted = false;
     this.getAboutContent();
   }
   onUpdateAbout(){
+    this.createAboutWanted = false;
     this.changePhotoFormWanted = false;
     this.updateAboutWanted = true;
     this.listOfAbout = [];
   }
+  onCreateAbout(){
+    this.createAboutWanted = true;
+    this.changePhotoFormWanted = false;
+    this.updateAboutWanted = false;
+    this.listOfAbout = [];
+  }
   onChangePhotoAbout(){
+    this.createAboutWanted = false;
     this.changePhotoFormWanted = true;
     this.updateAboutWanted = false;
     this.listOfAbout = [];
@@ -186,8 +232,35 @@ export class AboutComponent{
     this.setUpdateAbout(this.objectToUpdateAbout);
     this.updateAboutWanted = false;
   }
+  onSubmitCreateAbout(){
+    if(this.photoConfirmed === false){
+      alert('Chosen photo has to be confirmed!');
+      return;
+    }
+    this.objectToUpdateAbout = {
+      id: 0,
+      title1: this.aboutTitle13,
+      title2: this.aboutTitle23,
+      content1: this.aboutContent13,
+      content2: this.aboutContent23,
+      imageAbout: this.base64textString,
+      facebook: this.aboutFacebook3,
+      twitter: this.aboutTwitter3,
+      instagram: this.aboutInstagram3,
+      telephon: this.aboutTelephone3,
+      email: this.aboutEmail3,
+      shareLink: this.aboutShareLink3
+    }
+    this.setCreateAbout(this.objectToUpdateAbout);
+    this.createAboutWanted = false;
+    this.photoConfirmed = false;
+  }
   async setUpdateAbout(updatedDto: About){
     (await this.reqresService.setUpdateAboutContent(updatedDto));
+  }
+  async setCreateAbout(aboutDto: About){
+    (await this.reqresService.setNewCreateAboutForFirstTime(aboutDto));
+    this.url = undefined;
   }
 }
 export interface About{

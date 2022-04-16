@@ -128,6 +128,7 @@ export class EventsComponent{
       //   alert('image is full');
       //   console.log(this.objectToUpdateEvent.imageEvent);
       // }
+      //this.putUpdateEvent(this.objectToUpdateEvent, this.eventIdToDeleteOrUpdate);
       this.goForUploadPhotoEvent(this.objectToUpdateEvent, this.eventIdToDeleteOrUpdate);
       this.changePhotoWanted = false;
       this.photoConfirmed = false;
@@ -301,6 +302,7 @@ export class EventsComponent{
         organizer: this.eventOrganizer2
       }
       this.putUpdateEvent(this.firstEntryUpcomingEvents, this.eventIdToDeleteOrUpdate);
+      //this.goForUploadPhotoEvent(this.firstEntryUpcomingEvents, this.eventIdToDeleteOrUpdate);
       this.updateFormWanted = false;
     }else {
       alert("All mandatory fields are not filled yet!");
