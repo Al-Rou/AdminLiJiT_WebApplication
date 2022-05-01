@@ -24,7 +24,7 @@ export class LoginComponent{
   }
 
   onGetToken(){
-    if(this.userName==='Admin' && this.passWord==='2022') {
+    if(this.userName==='*********' && this.passWord==='**********') {
       this.waitingMessage = 'It takes some while. Please be patient...';
       //this.getTokenPlease();
       //this.checkToken();
